@@ -1,0 +1,22 @@
+.landing-container {
+    text-align: center;
+    padding: 20px;
+  }
+  header {
+    background: #007bff;
+    color: white;
+    padding: 50px 20px;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  section {
+    margin: 40px 0;
+  }
+  
