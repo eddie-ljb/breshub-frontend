@@ -15,4 +15,4 @@ COPY --from=build /app/dist/breshub-frontend /app
 RUN npm install -g http-server  # Installiere http-server, um die Anwendung zu starten
 
 EXPOSE 4200  # Port für den Angular-Server
-CMD ["http-server", "/app", "-p", 4200]  # Starte den Server auf Port 4200
+CMD ["http-server", "/app"]  # Starte den Server auf Port 4200
