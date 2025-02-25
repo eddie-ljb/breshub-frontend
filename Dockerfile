@@ -1,18 +1,19 @@
-# 1. Stufe: Build Angular App
-FROM node:18 AS build
+FROM node:18.13.0 as build
+
 WORKDIR /app
-COPY package.json package-lock.json ./
+
+COPY package*.json ./
+
 RUN npm install
+
+RUN npm install -g @angular/cli
+
 COPY . .
-RUN npm run build --configuration=production
 
-# 2. Stufe: Bereitstellen ohne nginx
-FROM node:18
+RUN ng build --configuration=production
 
-WORKDIR /app
-COPY --from=build /app/dist/breshub-frontend /app
+FROM nginx:latest
 
-RUN npm install -g http-server  # Installiere http-server, um die Anwendung zu starten
+COPY --from=build app/dist/breshub-frontend /usr/share/nginx/html
 
-EXPOSE 4200  # Port für den Angular-Server
-CMD ["http-server", "/app"]  # Starte den Server auf Port 4200
+EXPOSE 80
