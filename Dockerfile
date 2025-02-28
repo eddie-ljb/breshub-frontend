@@ -1,4 +1,3 @@
-# 1. Stufe: Build Angular App
 FROM node:18 AS build
 
 WORKDIR /usr/src/app
