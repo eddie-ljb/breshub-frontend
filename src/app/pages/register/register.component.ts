@@ -9,10 +9,10 @@ import { TokenService } from '../services/token.service';
   selector: 'app-login',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule, HttpClientModule],
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
-export class LoginComponent {
+export class RegisterComponent {
   username: string = '';
   password: string = '';
   email : string = '';
@@ -29,29 +29,25 @@ export class LoginComponent {
     this.message = '';
     this.error = '';
 
-    const loginData = {
+    const registerData = {
       username: this.username,
-      password: this.password
+      password: this.password,
+      email: this.email,
+      role: "user"
     };
 
-    this.http.get<any>('https://breshub-engine.etiennebader.de/auth/login?username='+this.username+'&password='+this.password)
+    this.http.post<any>('https://breshub-engine.etiennebader.de/auth/register', registerData)
       .subscribe({
         next: (response) => {
-          //this.message = JSON.stringify(response, null, 5);
-          this.token = response.access_token;
           this.loading = false;
-          this.tokenService.setToken(this.token);
         },
         error: (err) => {
-          this.error = 'Login fehlgeschlagen. Bitte überprüfe deine Eingaben.';
+          this.error = 'Registrierung fehlgeschlagen. Bitte überprüfe deine Eingaben.';
           console.error('Fehler:', err);
           this.loading = false;
         }
       });
 
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${this.token}`,
-      });
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/login']);
   }
 }

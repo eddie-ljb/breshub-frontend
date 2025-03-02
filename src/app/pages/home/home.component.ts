@@ -18,4 +18,18 @@ export class HomeComponent {
     this.router.navigate(['/login']);
   }
 
+  navigateToRegister() {
+    this.router.navigate(['/register']);
+  }
+
+  isDropdownOpen = false;
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  closeDropdown() {
+    this.isDropdownOpen = false;
+  }
+
 }
