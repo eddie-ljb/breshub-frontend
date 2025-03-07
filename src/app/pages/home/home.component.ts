@@ -32,4 +32,10 @@ export class HomeComponent {
     this.isDropdownOpen = false;
   }
 
+  isMobileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
 }
