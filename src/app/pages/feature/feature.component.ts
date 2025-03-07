@@ -4,13 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-feature',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  templateUrl: './feature.component.html',
+  styleUrl: './feature.component.css'
 })
-export class HomeComponent {
+export class FeatureComponent {
 
   constructor(private router: Router) {}
 
@@ -25,7 +25,6 @@ export class HomeComponent {
   navigateToFeature() {
     this.router.navigate(['/feature']);
   }
-
 
   isDropdownOpen = false;
 

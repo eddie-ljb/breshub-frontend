@@ -1,0 +1,145 @@
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+<div class="bg-white">
+  
+  <!-- HEADER -->
+<header class="absolute inset-x-0 top-0 z-50 bg-white shadow-md">
+  <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <!-- Logo -->
+    <div class="flex flex-1">
+      <a href="#" class="-m-1.5 p-1.5">
+        <span class="sr-only">Etienne Bader</span>
+        <img class="h-8 w-auto" src="/assets/logo.PNG" alt="Logo">
+      </a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex md:gap-x-12">
+      <a href="#" class="text-sm font-semibold text-gray-900">Product</a>
+      <a (click)="navigateToFeature()" class="text-sm font-semibold text-gray-900">Features</a>
+      <a href="#" class="text-sm font-semibold text-gray-900">Marketplace</a>
+      <a href="#" class="text-sm font-semibold text-gray-900">Company</a>
+    </div>
+
+    <!-- Desktop Login -->
+    <div class="hidden md:flex md:flex-1 md:justify-end">
+      <a (click)="navigateToLogin()" class="text-sm font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden">
+      <button (click)="toggleMobileMenu()" type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+        <span class="sr-only">Open main menu</span>
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation -->
+  <div *ngIf="isMobileMenuOpen" class="md:hidden absolute top-full inset-x-0 z-40 bg-white shadow-lg">
+    <div class="p-6 space-y-2">
+      <a href="#" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Product</a>
+      <a (click)="navigateToFeature()" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Features</a>
+      <a href="#" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Marketplace</a>
+      <a href="#" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Company</a>
+      <hr class="border-gray-300 my-4">
+      <a (click)="navigateToLogin()" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Log in</a>
+    </div>
+  </div>
+</header>
+
+
+<div class="relative isolate px-6 pt-14">
+
+    <!-- Desktop-Version (sichtbar ab md) -->
+    <div class="hidden md:block">
+        <div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl" aria-hidden="true">
+            <div class="relative left-1/2 aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"></div>
+        </div>
+        <div class="bg-white py-24 sm:py-32">
+            <div class="mx-auto max-w-7xl px-6 lg:px-8">
+                <div class="mx-auto max-w-2xl lg:text-center">
+                    <h2 class="text-base font-semibold text-indigo-600">Planen, Organisieren, Machen</h2>
+                    <p class="mt-2 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+                        Alles was man braucht, egal ob in der Freundesgruppe oder in der Familie.
+                    </p>
+                    <p class="mt-6 text-lg text-gray-600">
+                        BresHub ermöglicht umfassendes Planen und Organisieren mit Hilfe einer Reihe von Tools und Features, welche alle eine optimale Übersicht für Events geben.
+                    </p>
+                </div>
+
+                <!-- Desktop-Features -->
+                <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
+                    <dl class="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-2 lg:gap-y-16">
+
+                        <!-- Features -->
+                        <div class="relative pl-16">
+                            <dt class="text-lg font-semibold text-gray-900">Events erstellen</dt>
+                            <dd class="mt-2 text-base text-gray-600">Man kann Events erstellen, planen und organisieren.</dd>
+                        </div>
+
+                        <div class="relative pl-16">
+                            <dt class="text-lg font-semibold text-gray-900">Aufgabenaufteilung</dt>
+                            <dd class="mt-2 text-base text-gray-600">Mithilfe der Aufgabenaufteilung können Aufgaben einfach und bequem aufgeteilt werden.</dd>
+                        </div>
+
+                        <div class="relative pl-16">
+                            <dt class="text-lg font-semibold text-gray-900">Gruppen</dt>
+                            <dd class="mt-2 text-base text-gray-600">Das Erstellen von Gruppen ermöglicht umfangreiche Möglichkeiten zur Administration und zum Austausch.</dd>
+                        </div>
+
+                        <div class="relative pl-16">
+                            <dt class="text-lg font-semibold text-gray-900">Cost Split</dt>
+                            <dd class="mt-2 text-base text-gray-600">Durch das Cost-Split-Feature können auch Kosten und Belege ganz einfach aufgeteilt werden.</dd>
+                        </div>
+
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile-Version (sichtbar bis md) -->
+    <div class="block md:hidden bg-white py-16">
+        <div class="mx-auto max-w-2xl px-4 text-center">
+            <h2 class="text-sm font-semibold text-indigo-600">Planen, Organisieren, Machen</h2>
+            <p class="mt-2 text-3xl font-semibold tracking-tight text-gray-900">Alles, was du brauchst.</p>
+            <p class="mt-4 text-base text-gray-600">
+                BresHub hilft dir, Events zu organisieren, Aufgaben zu verwalten und Gruppen zu koordinieren.
+            </p>
+        </div>
+
+        <div class="mx-auto mt-12 max-w-xl">
+            <dl class="space-y-8">
+
+                <!-- Mobile: Events erstellen -->
+                <div class="relative pl-12">
+                    <dt class="text-lg font-semibold text-gray-900">Events erstellen</dt>
+                    <dd class="mt-2 text-sm text-gray-600">Erstelle und organisiere Events bequem mit BresHub.</dd>
+                </div>
+
+                <!-- Mobile: Aufgabenaufteilung -->
+                <div class="relative pl-12">
+                    <dt class="text-lg font-semibold text-gray-900">Aufgabenaufteilung</dt>
+                    <dd class="mt-2 text-sm text-gray-600">Verteile Aufgaben in deiner Gruppe effizient.</dd>
+                </div>
+
+                <!-- Mobile: Gruppen -->
+                <div class="relative pl-12">
+                    <dt class="text-lg font-semibold text-gray-900">Gruppen</dt>
+                    <dd class="mt-2 text-sm text-gray-600">Erstelle Gruppen für eine einfache Organisation und Kommunikation.</dd>
+                </div>
+
+                <!-- Mobile: Cost Split -->
+                <div class="relative pl-12">
+                    <dt class="text-lg font-semibold text-gray-900">Cost Split</dt>
+                    <dd class="mt-2 text-sm text-gray-600">Teile Kosten und Belege direkt mit deiner Gruppe.</dd>
+                </div>
+
+            </dl>
+        </div>
+    </div>
+
+</div>

@@ -15,7 +15,7 @@
     <!-- Desktop Navigation -->
     <div class="hidden md:flex md:gap-x-12">
       <a href="#" class="text-sm font-semibold text-gray-900">Product</a>
-      <a href="#" class="text-sm font-semibold text-gray-900">Features</a>
+      <a (click)="navigateToFeature()" class="text-sm font-semibold text-gray-900">Features</a>
       <a href="#" class="text-sm font-semibold text-gray-900">Marketplace</a>
       <a href="#" class="text-sm font-semibold text-gray-900">Company</a>
     </div>
@@ -41,7 +41,7 @@
   <div *ngIf="isMobileMenuOpen" class="md:hidden absolute top-full inset-x-0 z-40 bg-white shadow-lg">
     <div class="p-6 space-y-2">
       <a href="#" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Product</a>
-      <a href="#" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Features</a>
+      <a (click)="navigateToFeature()" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Features</a>
       <a href="#" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Marketplace</a>
       <a href="#" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Company</a>
       <hr class="border-gray-300 my-4">
