@@ -2,17 +2,22 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { Toast } from 'primeng/toast';
+import { Button } from 'primeng/button';
+import { ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-feature',
+  selector: 'app-pricing',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './feature.component.html',
-  styleUrl: './feature.component.css'
+  imports: [CommonModule, FormsModule, RouterModule, ConfirmDialogModule, Toast, Button],
+  templateUrl: './pricing.component.html',
+  styleUrl: './pricing.component.css',
+  providers: [ConfirmationService, MessageService]
 })
-export class FeatureComponent {
-
-  constructor(private router: Router) {}
+export class PricingComponent {
+constructor(private confirmationService: ConfirmationService, private router: Router, private messageService: MessageService) {}
 
   navigateToLogin() {
     this.router.navigate(['/login']);
@@ -45,5 +50,4 @@ export class FeatureComponent {
   toggleMobileMenu() {
     this.isMobileMenuOpen = !this.isMobileMenuOpen;
   }
-
 }

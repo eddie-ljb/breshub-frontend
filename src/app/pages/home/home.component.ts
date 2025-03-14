@@ -26,6 +26,9 @@ export class HomeComponent {
     this.router.navigate(['/feature']);
   }
 
+  navigateToPricing() {
+    this.router.navigate(['/pricing']);
+  }
 
   isDropdownOpen = false;
 
