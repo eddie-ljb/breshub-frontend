@@ -32,13 +32,14 @@ export class RegisterComponent {
     this.error = '';
 
     this.roleSet.add("user");
-    
+
     const registerData = {
       username: this.username,
       password: this.password,
       email: this.email,
-      role: this.roleSet
+      role: new Set<String>()
     };
+    registerData.role.add("user");
 
     this.http.post<any>('https://breshub-engine.etiennebader.de/auth/register', registerData)
       .subscribe({
