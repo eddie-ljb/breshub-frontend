@@ -30,6 +30,10 @@ export class HomeComponent {
     this.router.navigate(['/pricing']);
   }
 
+  navigateToTeam() {
+    this.router.navigate(['/team']);
+  }
+
   isDropdownOpen = false;
 
   toggleDropdown() {

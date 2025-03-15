@@ -1,0 +1,85 @@
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
+<div class="bg-white">
+  
+  <!-- HEADER -->
+<header class="absolute inset-x-0 top-0 z-50 bg-white shadow-md">
+  <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+    <!-- Logo -->
+    <div class="flex flex-1">
+      <a href="#" class="-m-1.5 p-1.5">
+        <span class="sr-only">Etienne Bader</span>
+        <img class="h-8 w-auto" src="/assets/logo.PNG" alt="Logo">
+      </a>
+    </div>
+
+    <!-- Desktop Navigation -->
+    <div class="hidden md:flex md:gap-x-12">
+      <a href="#" class="text-sm font-semibold text-gray-900">Product</a>
+      <a (click)="navigateToFeature()" class="text-sm font-semibold text-gray-900">Features</a>
+      <a (click)="navigateToPricing()" class="text-sm font-semibold text-gray-900">Pricing</a>
+      <a (click)="navigateToTeam()" class="text-sm font-semibold text-gray-900">Team</a>
+    </div>
+
+    <!-- Desktop Login -->
+    <div class="hidden md:flex md:flex-1 md:justify-end">
+      <a (click)="navigateToLogin()" class="text-sm font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <div class="md:hidden">
+      <button (click)="toggleMobileMenu()" type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
+        <span class="sr-only">Open main menu</span>
+        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+          <path *ngIf="!isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          <path *ngIf="isMobileMenuOpen" stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Navigation -->
+  <div *ngIf="isMobileMenuOpen" class="md:hidden absolute top-full inset-x-0 z-40 bg-white shadow-lg">
+    <div class="p-6 space-y-2">
+      <a href="#" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Product</a>
+      <a (click)="navigateToFeature()" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Features</a>
+      <a (click)="navigateToPricing()" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Pricing</a>
+      <a (click)="navigateToTeam()" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Team</a>
+      <hr class="border-gray-300 my-4">
+      <a (click)="navigateToLogin()" class="block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Log in</a>
+    </div>
+  </div>
+</header>
+
+
+<div class="bg-white py-24 sm:py-32">
+    <div class="mx-auto grid max-w-7xl gap-20 px-6 lg:px-8 xl:grid-cols-3">
+      <div class="max-w-xl">
+        <h2 class="text-3xl font-semibold tracking-tight text-pretty text-gray-900 sm:text-4xl">Lerne uns kennen!</h2>
+        <p class="mt-6 text-lg/8 text-gray-600">Im Moment wird BresHub von einem ein-Mann-Team betreut und entwickelt, dass sehr leidenschaftlich und interessant daran arbeitet.</p>
+      </div>
+      <ul role="list" class="grid gap-x-8 gap-y-12 sm:grid-cols-2 sm:gap-y-16 xl:col-span-2">
+        <li>
+          <div class="flex items-center gap-x-6">
+            <img class="size-16 rounded-full" src="/assets/bildBader.jpg" alt="">
+            <div>
+              <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">Etienne Bader</h3>
+              <p class="text-sm/6 font-semibold text-indigo-600">Gründer und Entwickler für Front- und Backend</p>
+            </div>
+          </div>
+        </li>
+        <li>
+            <div class="flex items-center gap-x-6">
+              <img class="size-16 rounded-full" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+              <div>
+                <h3 class="text-base/7 font-semibold tracking-tight text-gray-900">Auch du?</h3>
+                <p class="text-sm/6 font-semibold text-indigo-600">Falls du Lust hast, auch mitzuwirken, kontaktiere uns gerne über unser <a class="text-sm/6 font-bold text-pretty" href="https://home.etiennebader.de/contact">Kontaktformular.</a></p>
+              </div>
+            </div>
+          </li>
+  
+        <!-- More people... -->
+      </ul>
+    </div>
+  </div>
+</div>
+  
