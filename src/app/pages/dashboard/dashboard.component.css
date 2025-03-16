@@ -1,3 +1,12 @@
-.p-menubar {
-    width: 100%;
+@media (min-width: 1024px) {
+  .lg-sidebar {
+      width: 250px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      background-color: #1F2937;
+      color: white;
+      padding: 1rem;
   }
+}

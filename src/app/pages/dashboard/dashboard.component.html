@@ -1,46 +1,63 @@
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Profil Dropdown</title>
-
-</head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Sidebar Menu</title>
+  </head>
   
-<body>
-<div class="min-h-full">
-   
-  <p-menu [model]="items" class="flex justify-center" styleClass="w-full md:w-60">
-    <ng-template #start>
-        <span class="inline-flex items-center gap-1 px-2 py-2">
-            <svg width="33" height="35" viewBox="0 0 33 35" fill="none" xmlns="http://www.w3.org/2000/svg" class="block mx-auto">
-                <path d="..." fill="var(--primary-color)" />
-            </svg>
-            <span class="text-xl font-semibold">
-                PRIME<span class="text-primary">APP</span>
-            </span>
-        </span>
-    </ng-template>
-    <ng-template #submenuheader let-item>
-        <span class="text-primary font-bold">{{ item.label }}</span>
-    </ng-template>
-    <ng-template #item let-item>
-        <a pRipple class="flex items-center p-menu-item-link">
-            <span [class]="item.icon"></span>
-            <span class="ml-2">{{ item.label }}</span>
-            <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
-            <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
-                {{ item.shortcut }}
-            </span>
-        </a>
-    </ng-template>
-    <ng-template #end>
-        <button pRipple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
-            <span class="inline-flex flex-col">
-                <span class="font-bold">{{ username }}</span>
-            </span>
-        </button>
-    </ng-template>
-</p-menu>
+  <body>
+    <div class="flex min-h-screen">
+  
+      <!-- Sidebar für große Bildschirme -->
+      <div class="hidden lg:flex flex-col w-64 bg-gray-800 text-white h-screen p-4">
+        <div class="flex items-center space-x-2 pb-4 border-b border-gray-700">
+          <svg width="33" height="35" viewBox="0 0 33 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="..." fill="var(--primary-color)" />
+          </svg>
+          <span class="text-xl font-semibold">Bres<span class="text-primary">Hub</span></span>
+        </div>
+        <p-menu [model]="items" class="mt-4" styleClass="w-full">
+            <ng-template #item let-item>
+                <a pRipple class="flex items-center p-menu-item-link">
+                  <span [class]="item.icon"></span>
+                  <span class="ml-2">{{ item.label }}</span>
+                  <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+                  <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
+                    {{ item.shortcut }}
+                  </span>
+                </a>
+              </ng-template>
+              <ng-template #end>
+                <button pRipple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
+                  <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
+                  <span class="inline-flex flex-col">
+                    <span class="font-bold">{{ username }}</span>
+                  </span>
+                </button>
+              </ng-template>
 
-  </div>
-</body>
+        </p-menu>
+      </div>
+  
+      <!-- Hauptinhalt -->
+      <div class="flex-1 flex flex-col">
+        
+        <!-- Navbar für kleine Bildschirme -->
+        <div class="p-2 flex justify-between items-center bg-gray-800 text-white lg:hidden">
+          <button pButton icon="pi pi-bars" (click)="toggleSidebar()" class="p-button-rounded p-button-text"></button>
+          <h1 class="text-lg">Dashboard</h1>
+        </div>
+  
+        <div class="p-4">
+          <h2>Willkommen, {{ username }}</h2>
+        </div>
+      </div>
+  
+      <!-- Sidebar für kleine Bildschirme (über Button aufrufbar) -->
+      <p-sidebar [(visible)]="isSidebarVisible" [baseZIndex]="10000" position="left" [modal]="true" class="lg:hidden">
+        <p-menu [model]="items" styleClass="w-full"></p-menu>
+      </p-sidebar>
+  
+    </div>
+  </body>
+  
+  

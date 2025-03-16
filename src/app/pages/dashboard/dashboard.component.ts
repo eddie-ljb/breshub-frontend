@@ -13,6 +13,7 @@ import { BadgeModule } from 'primeng/badge';
 import { Observable } from 'rxjs';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,7 +28,8 @@ import { providePrimeNG } from 'primeng/config';
     MenuModule,
     ToastModule,
     AvatarModule,
-    BadgeModule
+    BadgeModule,
+    SidebarModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
@@ -38,7 +40,7 @@ export class DashboardComponent {
   username: string = '';
   password: string = '';
   email: string = '';
-  isSidebarVisible = true;
+  isSidebarVisible = false;
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -57,20 +59,20 @@ export class DashboardComponent {
   setupMenu() {
     this.items = [
       {
-        label: 'Datei',
+        label: 'Menü',
         icon: 'pi pi-file',
         items: [
-          { label: 'Neu', icon: 'pi pi-plus', command: () => this.onNew() },
-          { label: 'Öffnen', icon: 'pi pi-folder-open' },
-          { label: 'Speichern', icon: 'pi pi-save' }
+          { label: 'Dashboard', icon: 'pi pi-plus', command: () => this.onNew() },
         ]
       },
       {
-        label: 'Bearbeiten',
+        label: 'Gruppen',
         icon: 'pi pi-pencil',
         items: [
-          { label: 'Kopieren', icon: 'pi pi-copy' },
-          { label: 'Einfügen', icon: 'pi pi-paste' }
+          { label: 'Übersicht', icon: 'pi pi-copy' },
+          { label: 'Erstellen', icon: 'pi pi-paste' },
+          { label: 'Beitreten', icon: 'pi pi-paste' },
+          { label: 'Löschen', icon: 'pi pi-paste' }
         ]
       },
       {
