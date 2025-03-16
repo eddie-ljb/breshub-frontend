@@ -1,23 +1,33 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
-  private token = signal<string | null>(null);
+  private tokenSubject = new BehaviorSubject<string | null>(this.loadToken());
 
-  constructor() {
-    // Token direkt aus localStorage oder sessionStorage setzen
-    this.token.set(localStorage.getItem('authToken'));
+  constructor() {}
+
+  private loadToken(): string | null {
+    return typeof localStorage !== 'undefined' ? localStorage.getItem('authToken') : null;
   }
 
-  getToken(): string | null {
-    return this.token();
+  getToken(): Observable<string | null> {
+    return this.tokenSubject.asObservable();
   }
 
-  setToken(newToken: string) {
-    this.token.set(newToken);
-    localStorage.setItem('authToken', newToken);
+  setToken(newToken: string): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('authToken', newToken);
+    }
+    this.tokenSubject.next(newToken);
+  }
+
+  clearToken(): void {
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('authToken');
+    }
+    this.tokenSubject.next(null);
   }
 }
-

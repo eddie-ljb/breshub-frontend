@@ -11,7 +11,7 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-pricing',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ConfirmDialogModule, Toast, Button],
+  imports: [CommonModule, FormsModule, RouterModule, ConfirmDialogModule],
   templateUrl: './pricing.component.html',
   styleUrl: './pricing.component.css',
   providers: [ConfirmationService, MessageService]

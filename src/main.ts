@@ -5,8 +5,20 @@ import { provideRouter, withComponentInputBinding, withRouterConfig  } from '@an
 import { routes } from './app/app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { providePrimeNG } from 'primeng/config';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import Aura from '@primeng/themes/aura';
+
 
 
 bootstrapApplication(AppComponent, {
-  providers: [provideRouter(routes, withRouterConfig({ onSameUrlNavigation: 'reload' })), provideAnimations()]
+  providers: [provideRouter(routes, withRouterConfig({ onSameUrlNavigation: 'reload' })), provideAnimations(), provideAnimationsAsync(),
+    providePrimeNG({
+        theme: {
+            preset: Aura,
+            options: {
+                darkModeSelector: false || 'none'
+            }
+        },
+    }),]
 }).catch(err => console.error(err));

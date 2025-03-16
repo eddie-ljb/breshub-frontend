@@ -11,7 +11,7 @@ import { MessageService } from 'primeng/api';
 @Component({
   selector: 'app-team',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, ConfirmDialogModule, Toast, Button],
+  imports: [CommonModule, FormsModule, RouterModule, ConfirmDialogModule],
   templateUrl: './team.component.html',
   styleUrl: './team.component.css',
   providers: [ConfirmationService, MessageService]

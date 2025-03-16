@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule, ActivatedRoute } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { TokenService } from '../services/token.service';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
@@ -10,74 +10,50 @@ import { MenuItem } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { AvatarModule } from 'primeng/avatar';
 import { BadgeModule } from 'primeng/badge';
+import { Observable } from 'rxjs';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, HttpClientModule, ButtonModule, MenuModule, ToastModule, AvatarModule, BadgeModule],
+  encapsulation: ViewEncapsulation.None,
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    HttpClientModule,
+    ButtonModule,
+    MenuModule,
+    ToastModule,
+    AvatarModule,
+    BadgeModule
+  ],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrls: ['./dashboard.component.css'],
 })
 export class DashboardComponent {
-
   items: MenuItem[] = [];
-  token: string | null= '';
+  token: string = '';
   username: string = '';
   password: string = '';
-  email : string = '';
+  email: string = '';
 
-  constructor(private route: ActivatedRoute, private tokenService: TokenService, private http: HttpClient, private router: Router) {
-    this.token = this.tokenService.getToken();
-    if (this.token) {
-      this.getUsername(); // Erst aufrufen, wenn der Token da ist
-    } else {
-      console.warn('Token nicht gefunden, warte auf Setzung...');
-      this.waitForToken();
-    }
-      console.log('Token:', this.token);
-      this.getUsername();  
-    
-    this.items = [
-        {
-          label: 'Datei',
-          icon: 'pi pi-file',
-          items: [
-            { label: 'Neu', icon: 'pi pi-plus', command: () => this.onNew() },
-            { label: 'Öffnen', icon: 'pi pi-folder-open' },
-            { label: 'Speichern', icon: 'pi pi-save' }
-          ]
-        },
-        {
-          label: 'Bearbeiten',
-          icon: 'pi pi-pencil',
-          items: [
-            { label: 'Kopieren', icon: 'pi pi-copy' },
-            { label: 'Einfügen', icon: 'pi pi-paste' }
-          ]
-        },
-        {
-          label: 'Einstellungen',
-          icon: 'pi pi-cog',
-          items: [
-            { label: 'Optionen', icon: 'pi pi-sliders-h' },
-            { label: 'Hilfe', icon: 'pi pi-info' }
-          ]
-        }
-      ];
+  constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
+    this.tokenService.getToken().subscribe(token => {
+      if (token) {
+        this.token = token;
+        console.log('Token gefunden:', this.token);
+        this.getUsername();
+      } else {
+        console.warn('Kein Token vorhanden.');
+      }
+    });
 
+    this.setupMenu();
   }
 
-  ngOnInit() {
-    this.token = this.tokenService.getToken();
-  if (this.token) {
-    this.getUsername(); // Erst aufrufen, wenn der Token da ist
-  } else {
-    console.warn('Token nicht gefunden, warte auf Setzung...');
-    this.waitForToken();
-  }
-    console.log('Token:', this.token);
-    this.getUsername();
-
+  setupMenu() {
     this.items = [
       {
         label: 'Datei',
@@ -103,70 +79,36 @@ export class DashboardComponent {
           { label: 'Optionen', icon: 'pi pi-sliders-h' },
           { label: 'Hilfe', icon: 'pi pi-info' }
         ]
+      },
+      {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        command: () => this.logout()
       }
     ];
   }
-
-  
-  
-  onNew() {
-    console.log('Neue Datei erstellen');
-    this.token = this.tokenService.getToken();
-    console.log('Token:', this.token);
-    this.getUsername();
-
-    this.items = [
-      {
-        label: 'Datei',
-        icon: 'pi pi-file',
-        items: [
-          { label: 'Neu', icon: 'pi pi-plus', command: () => this.onNew() },
-          { label: 'Öffnen', icon: 'pi pi-folder-open' },
-          { label: 'Speichern', icon: 'pi pi-save' }
-        ]
-      },
-      {
-        label: 'Bearbeiten',
-        icon: 'pi pi-pencil',
-        items: [
-          { label: 'Kopieren', icon: 'pi pi-copy' },
-          { label: 'Einfügen', icon: 'pi pi-paste' }
-        ]
-      },
-      {
-        label: 'Einstellungen',
-        icon: 'pi pi-cog',
-        items: [
-          { label: 'Optionen', icon: 'pi pi-sliders-h' },
-          { label: 'Hilfe', icon: 'pi pi-info' }
-        ]
-      }
-    ];
-  }
-
-  
 
   getUsername() {
     const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.tokenService.getToken()}`
+      'Authorization': `Bearer ${this.token}`
     });
-    console.log(headers);
-    this.http.get<string>('https://breshub-engine.etiennebader.de/credentials/getUsername', { headers })
-    .subscribe({
-      next: (response) => {
-        this.username = response;
-      }
-    });
+
+    this.http.get< string >('https://breshub-engine.etiennebader.de/credentials/getUsername', { headers })
+      .subscribe({
+        next: (response) => {
+          this.username = response;
+          console.log('Username:', response);
+        },
+        error: (err) => console.error('Fehler beim Abrufen des Nutzernamens:', err)
+      });
   }
 
-  waitForToken() {
-    const checkToken = setInterval(() => {
-      this.token = this.tokenService.getToken();
-      if (this.token) {
-        clearInterval(checkToken);
-        this.getUsername();
-      }
-    }, 500); // Überprüft alle 500ms, ob der Token gesetzt wurde
+  onNew() {
+    console.log('Neue Datei erstellen');
   }
-  
+
+  logout() {
+    this.tokenService.clearToken();
+    this.router.navigate(['/login']);
+  }
 }
