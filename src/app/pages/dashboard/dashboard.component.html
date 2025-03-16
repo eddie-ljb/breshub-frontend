@@ -43,8 +43,8 @@
         
         <!-- Navbar für kleine Bildschirme -->
         <div class="p-2 flex justify-between items-center bg-gray-800 text-white lg:hidden">
-          <button pButton icon="pi pi-bars" (click)="toggleSidebar()" class="p-button-rounded p-button-text"></button>
-          <h1 class="text-lg">Dashboard</h1>
+            <p-button icon="pi pi-home" (click)="toggleSidebar()" aria-label="Home" class="button-handy"/>
+            <h1 class="">BresHub</h1>
         </div>
   
         <div class="p-4">
@@ -54,7 +54,27 @@
   
       <!-- Sidebar für kleine Bildschirme (über Button aufrufbar) -->
       <p-sidebar [(visible)]="isSidebarVisible" [baseZIndex]="10000" position="left" [modal]="true" class="lg:hidden">
-        <p-menu [model]="items" styleClass="w-full"></p-menu>
+        <p-menu [model]="items" styleClass="w-full">
+            <ng-template #item let-item>
+                <a pRipple class="flex items-center p-menu-item-link">
+                  <span [class]="item.icon"></span>
+                  <span class="ml-2">{{ item.label }}</span>
+                  <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+                  <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
+                    {{ item.shortcut }}
+                  </span>
+                </a>
+              </ng-template>
+              <ng-template #end>
+                <button pRipple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
+                  <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
+                  <span class="inline-flex flex-col">
+                    <span class="font-bold">{{ username }}</span>
+                  </span>
+                </button>
+              </ng-template>
+
+        </p-menu>
       </p-sidebar>
   
     </div>

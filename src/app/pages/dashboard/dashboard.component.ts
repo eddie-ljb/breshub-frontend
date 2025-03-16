@@ -62,7 +62,7 @@ export class DashboardComponent {
         label: 'Menü',
         icon: 'pi pi-file',
         items: [
-          { label: 'Dashboard', icon: 'pi pi-plus', command: () => this.onNew() },
+          { label: 'Dashboard', icon: 'pi pi-bars', command: () => this.router.navigate(['/dashboard']) },
         ]
       },
       {
@@ -70,9 +70,9 @@ export class DashboardComponent {
         icon: 'pi pi-pencil',
         items: [
           { label: 'Übersicht', icon: 'pi pi-copy' },
-          { label: 'Erstellen', icon: 'pi pi-paste' },
-          { label: 'Beitreten', icon: 'pi pi-paste' },
-          { label: 'Löschen', icon: 'pi pi-paste' }
+          { label: 'Erstellen', icon: 'pi pi-plus' },
+          { label: 'Beitreten', icon: 'pi pi-user-plus' },
+          { label: 'Löschen', icon: 'pi pi-times' }
         ]
       },
       {
