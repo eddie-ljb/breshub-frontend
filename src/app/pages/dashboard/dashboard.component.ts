@@ -38,6 +38,7 @@ export class DashboardComponent {
   username: string = '';
   password: string = '';
   email: string = '';
+  isSidebarVisible = true;
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -77,13 +78,9 @@ export class DashboardComponent {
         icon: 'pi pi-cog',
         items: [
           { label: 'Optionen', icon: 'pi pi-sliders-h' },
-          { label: 'Hilfe', icon: 'pi pi-info' }
+          { label: 'Hilfe', icon: 'pi pi-info' },
+          { label: 'Logout', icon: 'pi pi-sign-out',  command: () => this.logout()}
         ]
-      },
-      {
-        label: 'Logout',
-        icon: 'pi pi-sign-out',
-        command: () => this.logout()
       }
     ];
   }
@@ -107,8 +104,12 @@ export class DashboardComponent {
     console.log('Neue Datei erstellen');
   }
 
+  toggleSidebar() {
+    this.isSidebarVisible = !this.isSidebarVisible;
+  }
+
   logout() {
     this.tokenService.clearToken();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
 }

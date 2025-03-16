@@ -41,6 +41,12 @@ export class LoginComponent {
           this.token = response.access_token;
           this.loading = false;
           this.tokenService.setToken(response.access_token);
+
+          const headers = new HttpHeaders({
+            'Authorization': `Bearer ${this.token}`,
+          });
+          this.tokenService.setToken(this.token);
+          this.router.navigate(['/dashboard']);
         },
         error: (err) => {
           this.error = 'Login fehlgeschlagen. Bitte überprüfe deine Eingaben.';
@@ -48,11 +54,5 @@ export class LoginComponent {
           this.loading = false;
         }
       });
-
-      const headers = new HttpHeaders({
-        'Authorization': `Bearer ${this.token}`,
-      });
-      this.tokenService.setToken(this.token);
-      this.router.navigate(['/dashboard']);
   }
 }
