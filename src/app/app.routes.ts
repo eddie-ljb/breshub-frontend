@@ -15,5 +15,5 @@ export const routes: Routes = [
   { path: 'pricing', component: PricingComponent },
   { path: 'team', component: TeamComponent },
   { path: '', component: HomeComponent, pathMatch: 'full' }, // Standardroute zeigt AppComponent
-  { path: 'dashboard', component: DashboardComponent }
+  { path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'always' }
 ];

@@ -1,29 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
-  private readonly TOKEN_KEY = 'authToken';
+  private token = signal<string | null>(null);
 
-  setToken(token: string) {
-    if (typeof window !== 'undefined') {  // Prüfen, ob wir im Browser sind
-      sessionStorage.setItem(this.TOKEN_KEY, token);
-    }
+  constructor() {
+    // Token direkt aus localStorage oder sessionStorage setzen
+    this.token.set(localStorage.getItem('authToken'));
   }
 
-  getToken(): string {
-    if (typeof window !== 'undefined') {  // Prüfen, ob wir im Browser sind
-      if (sessionStorage.getItem(this.TOKEN_KEY) != null) {
-        return sessionStorage.getItem(this.TOKEN_KEY) + "";
-      }
-    }
-    return "";
+  getToken(): string | null {
+    return this.token();
   }
 
-  clearToken() {
-    if (typeof window !== 'undefined') {  // Prüfen, ob wir im Browser sind
-      sessionStorage.removeItem(this.TOKEN_KEY);
-    }
+  setToken(newToken: string) {
+    this.token.set(newToken);
+    localStorage.setItem('authToken', newToken);
   }
 }
+

@@ -40,7 +40,7 @@ export class LoginComponent {
           //this.message = JSON.stringify(response, null, 5);
           this.token = response.access_token;
           this.loading = false;
-          this.tokenService.setToken(this.token);
+          this.tokenService.setToken(response.access_token);
         },
         error: (err) => {
           this.error = 'Login fehlgeschlagen. Bitte überprüfe deine Eingaben.';
@@ -52,6 +52,7 @@ export class LoginComponent {
       const headers = new HttpHeaders({
         'Authorization': `Bearer ${this.token}`,
       });
+      this.tokenService.setToken(this.token);
       this.router.navigate(['/dashboard']);
   }
 }
