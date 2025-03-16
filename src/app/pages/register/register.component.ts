@@ -21,7 +21,6 @@ export class RegisterComponent {
   loading: boolean = false; // Ladeanzeige
   error: string = ''; // Fehlernachricht
   Authorization : string = '';
-  roleSet = new Set<String>();
 
 
   constructor(private http: HttpClient, private router: Router, private tokenService: TokenService) {}
@@ -31,15 +30,12 @@ export class RegisterComponent {
     this.message = '';
     this.error = '';
 
-    this.roleSet.add("user");
 
     const registerData = {
       username: this.username,
       password: this.password,
       email: this.email,
-      role: new Set<String>()
     };
-    registerData.role.add("user");
 
     this.http.post<any>('https://breshub-engine.etiennebader.de/auth/register', registerData)
       .subscribe({
