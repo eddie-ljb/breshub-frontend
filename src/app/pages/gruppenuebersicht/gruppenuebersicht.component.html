@@ -78,11 +78,11 @@
                 <ng-template #header>
                     <tr>
                         <th pSortableColumn="name" style="width:25%">Name <p-sortIcon field="name" /></th>
-                        <th pSortableColumn="country.name" style="width:25%">
-                            Country <p-sortIcon field="country.name" />
+                        <th pSortableColumn="groupcounter.counter" style="width:25%">
+                            Gruppengröße <p-sortIcon field="groupcounter.counter" />
                         </th>
-                        <th pSortableColumn="representative.name" style="width:25%">
-                            Representative <p-sortIcon field="representative.name" />
+                        <th pSortableColumn="members.members" style="width:25%">
+                            Gruppenmitglieder <p-sortIcon field="members.members" />
                         </th>
                         <th pSortableColumn="status" style="width:25%">Status <p-sortIcon field="status" /></th>
                     </tr>
@@ -94,14 +94,12 @@
                         </td>
                         <td>
                             <div class="flex items-center gap-2">
-                                <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" style="width: 20px" />
-                                <span class="ml-1 align-middle">{{ customer.country.name }}</span>
+                                <span class="ml-1 align-middle">{{ customer.groupcounter.counter }}</span>
                             </div>
                         </td>
                         <td>
                             <div class="flex items-center gap-2">
-                                <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" style="vertical-align: middle" />
-                                <span class="ml-1 align-middle">{{ customer.representative.name }}</span>
+                                <span class="ml-1 align-middle">{{ customer.members.members }}</span>
                             </div>
                         </td>
                         <td>
@@ -115,21 +113,10 @@
                             {{ customer.name }}
                         </td>
                         <td>
-                            <img
-                            src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
-                            [class]="'flag flag-' + customer.country.code"
-                            style="width: 20px" />
-                            <span class="ml-1 align-middle">{{ customer.country.name }}</span>
+                            <span class="ml-1 align-middle">{{ customer.groupcounter.counter }}</span>
                         </td>
                         <td>
-                            <img
-                            [alt]="customer.representative.name"
-                            src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
-                            customer.representative.image
-                            }}"
-                            width="32"
-                            style="vertical-align: middle" />
-                            <span class="ml-1 align-middle">{{ customer.representative.name }}</span>
+                            <span class="ml-1 align-middle">{{ customer.members.members }}</span>
                         </td>
                         <td>
                             <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)" />
