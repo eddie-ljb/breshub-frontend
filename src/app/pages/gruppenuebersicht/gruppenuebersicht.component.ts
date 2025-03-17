@@ -21,9 +21,8 @@ import { TagModule } from 'primeng/tag';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 
-interface Country {
-  name: string;
-  code: string;
+interface GroupCounter {
+  counter: number;
 }
 
 interface Group {
@@ -31,16 +30,15 @@ interface Group {
   name: string;
 }
 
-interface Representative {
-  name: string;
-  image: string;
+interface Members {
+  members: string[];
 }
 
 interface Customer {
   id: number;
   name: string | undefined;
-  country: Country;
-  representative: Representative;
+  groupcounter: GroupCounter;
+  members: Members;
   status: string;
 }
 
@@ -185,19 +183,17 @@ export class GruppenuebersichtComponent {
 
   loadCustomers() {
     this.customers = [];
-    this.customers = [];
 
-for (let i = 0; i < this.groupsOfUser.length; i++) {
-    const group = this.groupsOfUser[i]; // Aktuelles Group-Element
-    this.customers.push({
+    for (let i = 0; i < this.groupsOfUser.length; i++) {
+      const group = this.groupsOfUser[i]; // Aktuelles Group-Element
+      this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
-        country: { name: 'Germany', code: 'de' }, // Falls dynamisch, anpassen
-        representative: { name: 'Jane Smith', image: 'avatar1.png' },
+        groupcounter: { counter: 0 }, // Falls dynamisch, anpassen
+        members: { members: ["test", "toad"] },
         status: 'active'
-    });
-}
-
+      });
+    }
   }
 
   getSeverity(status: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined {
