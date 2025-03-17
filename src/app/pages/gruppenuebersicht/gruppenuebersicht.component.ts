@@ -92,7 +92,7 @@ export class GruppenuebersichtComponent {
       }
     });
     this.setupMenu();
-    this.loadCustomers();
+
   }
 
   setupMenu() {
@@ -160,8 +160,8 @@ export class GruppenuebersichtComponent {
     .subscribe({
       next: (response) => {
         this.groupsOfUser = response;
-        console.log("Counter: " + this.groupsOfUser);
-        this.setupValues();
+        console.log("Groups: " + this.groupsOfUser);
+        this.loadCustomers;
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
     });
