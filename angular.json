@@ -21,6 +21,13 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/primeicons/fonts",
+                "output": "assets/fonts"
+              },
               {
                 "glob": "**/*",
                 "input": "public"
@@ -87,6 +94,13 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
+              "src/favicon.ico",
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "node_modules/primeicons/fonts",
+                "output": "assets/fonts"
+              },
               {
                 "glob": "**/*",
                 "input": "public"
