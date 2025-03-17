@@ -78,6 +78,8 @@ export class GruppenuebersichtComponent {
   customers: Customer[] = [];
   selectedCustomers: Customer | null = null;
   groupsOfUser: Group[] = [];
+  groupMembers: string[] = [];
+  groupsize: number = 0;
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -163,6 +165,16 @@ export class GruppenuebersichtComponent {
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
     });
+    
+    this.http.get< Group[] >('https://breshub-engine.etiennebader.de/groups/getGroupsOfUser', { headers, params })
+    .subscribe({
+      next: (response) => {
+        this.groupsOfUser = response;
+        console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
+        this.loadCustomers();
+      },
+      error: (err) => console.error('Fehler beim Abrufen der Gruppengröße von Gruppe:', err)
+    });
         },
         error: (err) => console.error('Fehler beim Abrufen des Nutzernamens:', err)
       });
@@ -183,14 +195,29 @@ export class GruppenuebersichtComponent {
 
   loadCustomers() {
     this.customers = [];
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`
+    });
+
 
     for (let i = 0; i < this.groupsOfUser.length; i++) {
+      const params = new HttpParams().set('groupName', this.groupsOfUser[i].name);
+      this.http.get<string[]>('https://breshub-engine.etiennebader.de/groups/getAllMembersInGroup', { headers, params })
+        .subscribe({
+          next: (response) => {
+            this.groupsize = response.length;
+            this.groupMembers = response;
+            console.log("Group Size: " + this.groupsize);
+            console.log("Group Members: " + this.groupMembers);
+          },
+          error: (err) => console.error('Fehler beim Abrufen der Gruppenanzahl:', err)
+        });
       const group = this.groupsOfUser[i]; // Aktuelles Group-Element
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
-        groupcounter: { counter: 0 }, // Falls dynamisch, anpassen
-        members: { members: ["test", "toad"] },
+        groupcounter: { counter: this.groupsize }, // Falls dynamisch, anpassen
+        members: { members: this.groupMembers },
         status: 'active'
       });
     }
