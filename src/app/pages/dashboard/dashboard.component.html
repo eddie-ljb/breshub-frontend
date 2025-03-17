@@ -46,11 +46,54 @@
             <p-button icon="pi pi-home" (click)="toggleSidebar()" aria-label="Home" class="button-handy"/>
             <h1 class="">BresHub</h1>
         </div>
-  
+        <div class="p-2 flex justify-between text-primary items-center bg-gray-700 text-white">
+            <span class="text-xl font-semibold">Dashboard - Übersicht</span>
+        </div>
+
         <div class="p-4">
-          <h2>Willkommen, {{ username }}</h2>
+            <p-metergroup [value]="value" labelPosition="start">
+                <ng-template #label>
+                    <div class="flex flex-wrap gap-4">
+                        <ng-container *ngFor="let meterItem of value; let index = index">
+                            <p-card class="flex-1" styleClass="border border-surface shadow-none">
+                                <div class="flex justify-between gap-8">
+                                    <div class="flex flex-col gap-1">
+                                        <span class="text-surface-500 dark:text-surface-400 text-sm">{{ meterItem.label }}</span>
+                                        <span class="font-bold text-lg">{{ meterItem.value }}%</span>
+                                    </div>
+                                    <span class="w-8 h-8 rounded-full inline-flex justify-center items-center text-center" [style]="{ 'background-color': meterItem.color, color: '#ffffff' }">
+                                        <i [class]="meterItem.icon"></i>
+                                    </span>
+                                </div>
+                            </p-card>
+                        </ng-container>
+                    </div>
+                </ng-template>
+                <ng-template #meter let-value let-class="class" let-width="size">
+                    <span [class]="class" [style]="{ background: 'linear-gradient(to right, ' + value.color + ', ' + value.color + ')', width: width }"></span>
+                </ng-template>
+                <ng-template #start let-totalPercent="totalPercent">
+                    <div class="flex justify-between mt-4 mb-2 relative">
+                        <span>Storage</span>
+                        <span [style]="{ width: totalPercent + '%' }" class="absolute text-right">{{ totalPercent }}%</span>
+                    </div>
+                </ng-template>
+                <ng-template #end>
+                    <div class="flex justify-between mt-4">
+                        <p-button label="Manage Storage" [outlined]="true" size="small" />
+                        <p-button label="Update Plan" size="small" />
+                    </div>
+                </ng-template>
+            </p-metergroup>
+            
         </div>
       </div>
+
+
+
+
+
+
   
       <!-- Sidebar für kleine Bildschirme (über Button aufrufbar) -->
       <p-sidebar [(visible)]="isSidebarVisible" [baseZIndex]="10000" position="left" [modal]="true" class="lg:hidden">

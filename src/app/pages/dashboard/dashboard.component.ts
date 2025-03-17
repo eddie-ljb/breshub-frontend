@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { TokenService } from '../services/token.service';
-import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders, HttpParams } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
@@ -14,6 +14,8 @@ import { Observable } from 'rxjs';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import { SidebarModule } from 'primeng/sidebar';
+import { MeterGroupModule, MeterItem } from 'primeng/metergroup';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,7 +31,9 @@ import { SidebarModule } from 'primeng/sidebar';
     ToastModule,
     AvatarModule,
     BadgeModule,
-    SidebarModule
+    SidebarModule,
+    MeterGroupModule,
+    CardModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
@@ -40,7 +44,10 @@ export class DashboardComponent {
   username: string = '';
   password: string = '';
   email: string = '';
+  groupsCounter: number = 0;
   isSidebarVisible = false;
+  value: any[] = [];
+
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -52,8 +59,8 @@ export class DashboardComponent {
         console.warn('Kein Token vorhanden.');
       }
     });
-
     this.setupMenu();
+
   }
 
   setupMenu() {
@@ -87,6 +94,16 @@ export class DashboardComponent {
     ];
   }
 
+  setupValues() {
+    console.log("Values Counter:" + this.groupsCounter);
+    let used = parseFloat((this.groupsCounter / 15).toFixed(2)) * 100;
+    this.value = [
+      { label: 'Gruppen', value: used, color: '#4CAF50', icon: 'pi pi-file' },
+      { label: 'Andere', value: 0, color: '#9C27B0', icon: 'pi pi-folder' },
+      { label: 'Freier Speicher', value: (100 - used), color: '#E0E0E0', icon: 'pi pi-hdd' }
+    ];
+  }
+
   getUsername() {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`
@@ -97,6 +114,16 @@ export class DashboardComponent {
         next: (response) => {
           this.username = response;
           console.log('Username:', response);
+          const params = new HttpParams().set('username', this.username);
+          this.http.get<string>('https://breshub-engine.etiennebader.de/groups/getGroupsCounterOfUser', { headers, params })
+    .subscribe({
+      next: (response) => {
+        this.groupsCounter = +response;
+        console.log("Counter: " + this.groupsCounter);
+        this.setupValues();
+      },
+      error: (err) => console.error('Fehler beim Abrufen der Gruppenanzahl:', err)
+    });
         },
         error: (err) => console.error('Fehler beim Abrufen des Nutzernamens:', err)
       });
