@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -16,29 +16,54 @@ import { providePrimeNG } from 'primeng/config';
 import { SidebarModule } from 'primeng/sidebar';
 import { MeterGroupModule, MeterItem } from 'primeng/metergroup';
 import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+
+interface Country {
+  name: string;
+  code: string;
+}
+
+interface Representative {
+  name: string;
+  image: string;
+}
+
+interface Customer {
+  id: number;
+  name: string;
+  country: Country;
+  representative: Representative;
+  status: string;
+}
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
+  selector: 'app-gruppenuebersicht',standalone: true,
   encapsulation: ViewEncapsulation.None,
-  imports: [
-    CommonModule,
-    FormsModule,
-    RouterModule,
-    HttpClientModule,
-    ButtonModule,
-    MenuModule,
-    ToastModule,
-    AvatarModule,
-    BadgeModule,
-    SidebarModule,
-    MeterGroupModule,
-    CardModule
-  ],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css'],
+    imports: [
+      CommonModule,
+      FormsModule,
+      RouterModule,
+      HttpClientModule,
+      ButtonModule,
+      MenuModule,
+      ToastModule,
+      AvatarModule,
+      BadgeModule,
+      SidebarModule,
+      MeterGroupModule,
+      CardModule,
+      TableModule,
+      TagModule,
+      IconFieldModule,
+      InputIconModule
+    ],
+  templateUrl: './gruppenuebersicht.component.html',
+  styleUrl: './gruppenuebersicht.component.css'
 })
-export class DashboardComponent {
+export class GruppenuebersichtComponent implements OnInit {
   items: MenuItem[] = [];
   token: string = '';
   username: string = '';
@@ -47,7 +72,8 @@ export class DashboardComponent {
   groupsCounter: number = 0;
   isSidebarVisible = false;
   value: any[] = [];
-
+  customers: Customer[] = [];
+  selectedCustomers: Customer | null = null;
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -61,6 +87,11 @@ export class DashboardComponent {
     });
     this.setupMenu();
 
+
+  }
+
+  ngOnInit(): void {
+    this.loadCustomers();
   }
 
   setupMenu() {
@@ -141,4 +172,51 @@ export class DashboardComponent {
     this.tokenService.clearToken();
     this.router.navigate(['/']);
   }
+
+  loadCustomers() {
+    this.customers = [
+        {
+            id: 1,
+            name: 'John Doe',
+            country: { name: 'Germany', code: 'de' },
+            representative: { name: 'Jane Smith', image: 'avatar1.png' },
+            status: 'active'
+        },
+        {
+            id: 2,
+            name: 'Alice Johnson',
+            country: { name: 'USA', code: 'us' },
+            representative: { name: 'Michael Brown', image: 'avatar2.png' },
+            status: 'inactive'
+        },
+        {
+            id: 3,
+            name: 'Bob Williams',
+            country: { name: 'France', code: 'fr' },
+            representative: { name: 'Emily Clark', image: 'avatar3.png' },
+            status: 'pending'
+        }
+    ];
+  }
+
+  getSeverity(status: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined {
+    switch (status.toLowerCase()) {
+        case 'active':
+            return 'success';
+        case 'inactive':
+            return 'danger';
+        case 'pending':
+            return 'warn';
+        default:
+            return 'info'; // Hier ist 'info' erlaubt
+    }
+  }
+  onFilterGlobal(event: Event, dt: any) {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement) {
+        dt.filterGlobal(inputElement.value, 'contains');
+    }
+  }
+
+
 }

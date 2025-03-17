@@ -1,0 +1,185 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Sidebar Menu</title>
+  </head>
+  
+  <body>
+    <div class="flex min-h-screen">
+  
+      <!-- Sidebar für große Bildschirme -->
+      <div class="hidden lg:flex flex-col w-64 bg-gray-800 text-white h-screen p-4">
+        <div class="flex items-center space-x-2 pb-4 border-b border-gray-700">
+          <svg width="33" height="35" viewBox="0 0 33 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="..." fill="var(--primary-color)" />
+          </svg>
+          <span class="text-xl font-semibold">Bres<span class="text-primary">Hub</span></span>
+        </div>
+        <p-menu [model]="items" class="mt-4" styleClass="w-full">
+            <ng-template #item let-item>
+                <a pRipple class="flex items-center p-menu-item-link">
+                  <span [class]="item.icon"></span>
+                  <span class="ml-2">{{ item.label }}</span>
+                  <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+                  <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
+                    {{ item.shortcut }}
+                  </span>
+                </a>
+              </ng-template>
+              <ng-template #end>
+                <button pRipple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
+                  <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
+                  <span class="inline-flex flex-col">
+                    <span class="font-bold">{{ username }}</span>
+                  </span>
+                </button>
+              </ng-template>
+
+        </p-menu>
+      </div>
+  
+    <!-- Hauptinhalt -->
+    <div class="flex-1 flex flex-col">
+        
+        <!-- Navbar für kleine Bildschirme -->
+        <div class="p-2 flex justify-between items-center bg-gray-800 text-white lg:hidden">
+            <p-button icon="pi pi-home" (click)="toggleSidebar()" aria-label="Home" class="button-handy"/>
+            <h1 class="">BresHub</h1>
+        </div>
+        <div class="p-2 flex justify-between text-primary items-center bg-gray-700 text-white">
+            <span class="text-xl font-semibold">Gruppen - Übersicht</span>
+        </div>
+
+        <div class="p-4">
+            <p-table
+            #dt1
+            [value]="customers"
+            [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+            selectionMode="single"
+            [(selection)]="selectedCustomers"
+            dataKey="id"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            [rows]="5"
+            [paginator]="true"
+            stateStorage="session"
+            stateKey="statedemo-session">
+                <ng-template #caption>
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon>
+                            <i class="pi pi-search"></i>
+                        </p-inputicon>
+                        <input
+                        pInputText
+                        type="text"
+                        (input)="onFilterGlobal($event, dt1)"
+                        placeholder="Global Search" />
+                    </p-iconfield>
+                </ng-template>
+                <ng-template #header>
+                    <tr>
+                        <th pSortableColumn="name" style="width:25%">Name <p-sortIcon field="name" /></th>
+                        <th pSortableColumn="country.name" style="width:25%">
+                            Country <p-sortIcon field="country.name" />
+                        </th>
+                        <th pSortableColumn="representative.name" style="width:25%">
+                            Representative <p-sortIcon field="representative.name" />
+                        </th>
+                        <th pSortableColumn="status" style="width:25%">Status <p-sortIcon field="status" /></th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-customer>
+                    <tr [pSelectableRow]="customer">
+                        <td>
+                            {{ customer.name }}
+                        </td>
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <img src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png" [class]="'flag flag-' + customer.country.code" style="width: 20px" />
+                                <span class="ml-1 align-middle">{{ customer.country.name }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <img [alt]="customer.representative.name" src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{ customer.representative.image }}" width="32" style="vertical-align: middle" />
+                                <span class="ml-1 align-middle">{{ customer.representative.name }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)" />
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-customer>
+                    <tr [pSelectableRow]="customer">
+                        <td>
+                            {{ customer.name }}
+                        </td>
+                        <td>
+                            <img
+                            src="https://primefaces.org/cdn/primeng/images/demo/flag/flag_placeholder.png"
+                            [class]="'flag flag-' + customer.country.code"
+                            style="width: 20px" />
+                            <span class="ml-1 align-middle">{{ customer.country.name }}</span>
+                        </td>
+                        <td>
+                            <img
+                            [alt]="customer.representative.name"
+                            src="https://primefaces.org/cdn/primeng/images/demo/avatar/{{
+                            customer.representative.image
+                            }}"
+                            width="32"
+                            style="vertical-align: middle" />
+                            <span class="ml-1 align-middle">{{ customer.representative.name }}</span>
+                        </td>
+                        <td>
+                            <p-tag [value]="customer.status" [severity]="getSeverity(customer.status)" />
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template emptymessage>
+                    <tr>
+                        <td colspan="4">No customers found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
+        </div>
+
+        
+    </div>
+
+
+
+
+
+
+  
+      <!-- Sidebar für kleine Bildschirme (über Button aufrufbar) -->
+      <p-sidebar [(visible)]="isSidebarVisible" [baseZIndex]="10000" position="left" [modal]="true" class="lg:hidden">
+        <p-menu [model]="items" styleClass="w-full">
+            <ng-template #item let-item>
+                <a pRipple class="flex items-center p-menu-item-link">
+                  <span [class]="item.icon"></span>
+                  <span class="ml-2">{{ item.label }}</span>
+                  <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+                  <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
+                    {{ item.shortcut }}
+                  </span>
+                </a>
+              </ng-template>
+              <ng-template #end>
+                <button pRipple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
+                  <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
+                  <span class="inline-flex flex-col">
+                    <span class="font-bold">{{ username }}</span>
+                  </span>
+                </button>
+              </ng-template>
+
+        </p-menu>
+      </p-sidebar>
+  
+    </div>
+  </body>
+  
+  
