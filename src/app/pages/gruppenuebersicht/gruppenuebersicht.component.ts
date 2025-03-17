@@ -201,7 +201,8 @@ export class GruppenuebersichtComponent {
 
 
     for (let i = 0; i < this.groupsOfUser.length; i++) {
-      const params = new HttpParams().set('groupName', this.groupsOfUser[i].name);
+      let params = null;
+      params = new HttpParams().set('groupName', this.groupsOfUser[i].name);
       this.http.get<string[]>('https://breshub-engine.etiennebader.de/groups/getAllMembersInGroup', { headers, params })
         .subscribe({
           next: (response) => {
