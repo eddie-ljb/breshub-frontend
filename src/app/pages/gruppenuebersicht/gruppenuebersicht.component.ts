@@ -156,11 +156,11 @@ export class GruppenuebersichtComponent {
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppenanzahl:', err)
     });
-    this.http.get< any >('https://breshub-engine.etiennebader.de/groups/getGroupsOfUser', { headers, params })
+    this.http.get< Group[] >('https://breshub-engine.etiennebader.de/groups/getGroupsOfUser', { headers, params })
     .subscribe({
       next: (response) => {
         this.groupsOfUser = response;
-        console.log("Groups: " + this.groupsOfUser);
+        console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
         this.loadCustomers;
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
