@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
@@ -26,6 +26,11 @@ interface Country {
   code: string;
 }
 
+interface Group {
+  id: number;
+  name: string;
+}
+
 interface Representative {
   name: string;
   image: string;
@@ -33,7 +38,7 @@ interface Representative {
 
 interface Customer {
   id: number;
-  name: string;
+  name: string | undefined;
   country: Country;
   representative: Representative;
   status: string;
@@ -63,7 +68,7 @@ interface Customer {
   templateUrl: './gruppenuebersicht.component.html',
   styleUrl: './gruppenuebersicht.component.css'
 })
-export class GruppenuebersichtComponent implements OnInit {
+export class GruppenuebersichtComponent {
   items: MenuItem[] = [];
   token: string = '';
   username: string = '';
@@ -74,6 +79,7 @@ export class GruppenuebersichtComponent implements OnInit {
   value: any[] = [];
   customers: Customer[] = [];
   selectedCustomers: Customer | null = null;
+  groupsOfUser: Group[] = [];
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -86,11 +92,6 @@ export class GruppenuebersichtComponent implements OnInit {
       }
     });
     this.setupMenu();
-
-
-  }
-
-  ngOnInit(): void {
     this.loadCustomers();
   }
 
@@ -155,6 +156,15 @@ export class GruppenuebersichtComponent implements OnInit {
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppenanzahl:', err)
     });
+    this.http.get< any >('https://breshub-engine.etiennebader.de/groups/getGroupsOfUser', { headers, params })
+    .subscribe({
+      next: (response) => {
+        this.groupsOfUser = response;
+        console.log("Counter: " + this.groupsOfUser);
+        this.setupValues();
+      },
+      error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
+    });
         },
         error: (err) => console.error('Fehler beim Abrufen des Nutzernamens:', err)
       });
@@ -174,29 +184,13 @@ export class GruppenuebersichtComponent implements OnInit {
   }
 
   loadCustomers() {
-    this.customers = [
-        {
-            id: 1,
-            name: 'John Doe',
-            country: { name: 'Germany', code: 'de' },
-            representative: { name: 'Jane Smith', image: 'avatar1.png' },
-            status: 'active'
-        },
-        {
-            id: 2,
-            name: 'Alice Johnson',
-            country: { name: 'USA', code: 'us' },
-            representative: { name: 'Michael Brown', image: 'avatar2.png' },
-            status: 'inactive'
-        },
-        {
-            id: 3,
-            name: 'Bob Williams',
-            country: { name: 'France', code: 'fr' },
-            representative: { name: 'Emily Clark', image: 'avatar3.png' },
-            status: 'pending'
-        }
-    ];
+    this.customers = this.groupsOfUser.map((group, index) => ({
+      id: index + 1, // ID basierend auf der Position in der Liste
+      name: group.name, // Name direkt aus groupsOfUser
+      country: { name: 'Germany', code: 'de' }, // Falls du eine dynamische Zuordnung möchtest, musst du dies anpassen
+      representative: { name: 'Jane Smith', image: 'avatar1.png' }, // Falls nötig, dynamisch setzen
+      status: 'active' // Falls der Status aus group kommt, dann `group.status`
+  }));
   }
 
   getSeverity(status: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined {
