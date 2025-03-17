@@ -161,7 +161,7 @@ export class GruppenuebersichtComponent {
       next: (response) => {
         this.groupsOfUser = response;
         console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
-        this.loadCustomers;
+        this.loadCustomers();
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
     });
@@ -185,15 +185,19 @@ export class GruppenuebersichtComponent {
 
   loadCustomers() {
     this.customers = [];
-    this.groupsOfUser.forEach((group, index) => {
-      this.customers.push({
-        id: index + 1,
+    this.customers = [];
+
+for (let i = 0; i < this.groupsOfUser.length; i++) {
+    const group = this.groupsOfUser[i]; // Aktuelles Group-Element
+    this.customers.push({
+        id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
-        country: { name: 'Germany', code: 'de' },
+        country: { name: 'Germany', code: 'de' }, // Falls dynamisch, anpassen
         representative: { name: 'Jane Smith', image: 'avatar1.png' },
         status: 'active'
-      });
     });
+}
+
   }
 
   getSeverity(status: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined {
