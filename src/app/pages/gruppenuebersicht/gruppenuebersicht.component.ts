@@ -184,13 +184,16 @@ export class GruppenuebersichtComponent {
   }
 
   loadCustomers() {
-    this.customers = this.groupsOfUser.map((group, index) => ({
-      id: index + 1, // ID basierend auf der Position in der Liste
-      name: group.name, // Name direkt aus groupsOfUser
-      country: { name: 'Germany', code: 'de' }, // Falls du eine dynamische Zuordnung möchtest, musst du dies anpassen
-      representative: { name: 'Jane Smith', image: 'avatar1.png' }, // Falls nötig, dynamisch setzen
-      status: 'active' // Falls der Status aus group kommt, dann `group.status`
-  }));
+    this.customers = [];
+    this.groupsOfUser.forEach((group, index) => {
+      this.customers.push({
+        id: index + 1,
+        name: group.name,
+        country: { name: 'Germany', code: 'de' },
+        representative: { name: 'Jane Smith', image: 'avatar1.png' },
+        status: 'active'
+      });
+    });
   }
 
   getSeverity(status: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined {
