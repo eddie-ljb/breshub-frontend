@@ -78,8 +78,8 @@ export class GruppenuebersichtComponent {
   customers: Customer[] = [];
   selectedCustomers: Customer | null = null;
   groupsOfUser: Group[] = [];
-  groupMembers: string[] = [];
-  groupsize: number = 0;
+  groupMembers: [string[]] = [[]];
+  groupsize: [number] = [0];
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -206,10 +206,10 @@ export class GruppenuebersichtComponent {
       this.http.get<string[]>('https://breshub-engine.etiennebader.de/groups/getAllMembersInGroup', { headers, params })
         .subscribe({
           next: (response) => {
-            this.groupsize = response.length;
-            this.groupMembers = response;
-            console.log("Group Size: " + this.groupsize);
-            console.log("Group Members: " + this.groupMembers);
+            this.groupsize[i] = response.length;
+            this.groupMembers[i] = response;
+            console.log("Group Size: " + this.groupsize[i]);
+            console.log("Group Members: " + this.groupMembers[i]);
           },
           error: (err) => console.error('Fehler beim Abrufen der Gruppenanzahl:', err)
         });
@@ -217,8 +217,8 @@ export class GruppenuebersichtComponent {
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
-        groupcounter: { counter: this.groupsize }, // Falls dynamisch, anpassen
-        members: { members: this.groupMembers },
+        groupcounter: { counter: this.groupsize[i] }, // Falls dynamisch, anpassen
+        members: { members: this.groupMembers[i] },
         status: 'active'
       });
     }
