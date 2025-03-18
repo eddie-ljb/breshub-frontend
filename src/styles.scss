@@ -2,3 +2,12 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
 
+@font-face {
+    font-family: "primeicons";
+    font-display: block;
+    src: url("/assets/fonts/primeicons.woff2") format("woff2"),
+         url("/assets/fonts/primeicons.woff") format("woff"),
+         url("/assets/fonts/primeicons.ttf") format("truetype"),
+         url("/assets/fonts/primeicons.eot") format("embedded-opentype");
+  }
+
