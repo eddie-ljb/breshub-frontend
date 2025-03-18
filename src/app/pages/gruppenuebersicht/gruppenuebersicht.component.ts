@@ -190,7 +190,7 @@ export class GruppenuebersichtComponent {
 
   loadCustomers() {
     this.customers = [];      
-    this.groupsOfUser.forEach(group => {
+    this.groupsOfUser.forEach((group: { name: string; id: any; }) => {
       console.log("gruppenname:" + group.name);
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
