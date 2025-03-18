@@ -163,12 +163,12 @@ export class GruppenuebersichtComponent {
         this.groupMembers = response.members;
         this.groupsCounter = response.counter;
         this.membersCounter = new Map(Object.entries(response.membersCount));
+        console.log("✅ membersCounter (Map):", this.membersCounter);
         console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
         this.loadCustomers();
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
       });
-    
       },
       error: (err) => console.error('Fehler beim Abrufen des Nutzernamens:', err)
       });
@@ -190,6 +190,10 @@ export class GruppenuebersichtComponent {
   loadCustomers() {
     this.customers = [];      
     this.groupsOfUser.forEach((group: { name: string; id: any; }) => {
+      console.log("🔹 Gruppenname:", group.name);
+
+    const memberCount = this.membersCounter.get(group.name);
+    console.log(`📊 Mitgliederanzahl für ${group.name}:`, memberCount);
       console.log("gruppenname:" + group.name);
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
