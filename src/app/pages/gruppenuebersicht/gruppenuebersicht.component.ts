@@ -22,7 +22,6 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 
 
-
 interface GroupInfo {
   membersCount: Map<string, number>;
   members: Members;
@@ -163,7 +162,7 @@ export class GruppenuebersichtComponent {
         this.groupsOfUser = response.groups;
         this.groupMembers = response.members;
         this.groupsCounter = response.counter;
-        this.membersCounter = response.membersCount;
+        this.membersCounter = new Map(Object.entries(response.membersCount));
         console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
         this.loadCustomers();
       },
@@ -195,7 +194,7 @@ export class GruppenuebersichtComponent {
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
-        memberscount: this.membersCounter?.get(group.name), // Falls dynamisch, anpassen
+        memberscount: this.membersCounter.get(group.name), // Falls dynamisch, anpassen
         members: { member: this.groupMembers?.members.get(group.name) },
         status: 'active'
       });
