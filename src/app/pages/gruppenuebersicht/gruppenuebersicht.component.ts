@@ -35,7 +35,7 @@ interface Group {
 }
 
 interface Members {
-  members: Map<string, string[] | undefined>;
+  members: Map<string, string[]>;
 }
 
 interface Member {
@@ -86,7 +86,7 @@ export class GruppenuebersichtComponent {
   customers: Customer[] = [];
   selectedCustomers: Customer | null = null;
   groupsOfUser: Group[] = [];
-  groupMembers: Members | undefined;
+  groupMembers!: Members;
   member: string[] | undefined;
   membersCounter: Map<string, number> = new Map();
 
@@ -149,7 +149,7 @@ export class GruppenuebersichtComponent {
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`
     });
-
+    
     this.http.get< string >('https://breshub-engine.etiennebader.de/credentials/getUsername', { headers })
       .subscribe({
         next: (response) => {
@@ -160,7 +160,9 @@ export class GruppenuebersichtComponent {
     .subscribe({
       next: (response) => {
         this.groupsOfUser = response.groups;
-        this.groupMembers = response.members;
+        this.groupMembers = {
+          members: new Map(Object.entries(response.members))
+        };
         console.log("groupMembers:" + this.groupMembers);
         this.groupsCounter = response.counter;
         this.membersCounter = new Map(Object.entries(response.membersCount));
