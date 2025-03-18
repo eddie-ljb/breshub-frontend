@@ -22,7 +22,13 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 
 interface GroupCounter {
-  counter: number;
+  counter: number | undefined;
+}
+
+interface GroupInfo {
+  members: Members;
+  groups: Group[];
+  groupcounter: number;
 }
 
 interface Group {
@@ -31,14 +37,18 @@ interface Group {
 }
 
 interface Members {
-  members: string[];
+  members: Map<string, string[] | undefined>;
+}
+
+interface Member {
+  member: string[] | undefined;
 }
 
 interface Customer {
   id: number;
   name: string | undefined;
   groupcounter: GroupCounter;
-  members: Members;
+  members: Member;
   status: string;
 }
 
@@ -78,8 +88,9 @@ export class GruppenuebersichtComponent {
   customers: Customer[] = [];
   selectedCustomers: Customer | null = null;
   groupsOfUser: Group[] = [];
-  groupMembers: [string[]] = [[]];
-  groupsize: [number] = [0];
+  groupMembers: Members | null = null;
+  member: string[] | undefined;
+  groupsize: Map<string, number> = new Map<string, number>();
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -147,27 +158,23 @@ export class GruppenuebersichtComponent {
           this.username = response;
           console.log('Username:', response);
           const params = new HttpParams().set('username', this.username);
-          this.http.get<string>('https://breshub-engine.etiennebader.de/groups/getGroupsCounterOfUser', { headers, params })
+    this.http.get< GroupInfo >('https://breshub-engine.etiennebader.de/groups/getGroupsOfUser', { headers, params })
     .subscribe({
       next: (response) => {
-        this.groupsCounter = +response;
-        console.log("Counter: " + this.groupsCounter);
-        this.setupValues();
-      },
-      error: (err) => console.error('Fehler beim Abrufen der Gruppenanzahl:', err)
-    });
-    this.http.get< Group[] >('https://breshub-engine.etiennebader.de/groups/getGroupsOfUser', { headers, params })
-    .subscribe({
-      next: (response) => {
-        this.groupsOfUser = response;
+        this.groupsOfUser = response.groups;
+        this.groupMembers = response.members;
+        this.groupsCounter = response.groupcounter
+        this.groupsOfUser.forEach(group => {
+          this.groupsize.set(group.name, this.groupsOfUser.length);
+        });
         console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
         this.loadCustomers();
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
-    });
+      });
     
-        },
-        error: (err) => console.error('Fehler beim Abrufen des Nutzernamens:', err)
+      },
+      error: (err) => console.error('Fehler beim Abrufen des Nutzernamens:', err)
       });
   }
 
@@ -185,35 +192,18 @@ export class GruppenuebersichtComponent {
   }
 
   loadCustomers() {
-    this.customers = [];
-    const headers = new HttpHeaders({
-      'Authorization': `Bearer ${this.token}`
-    });
-
-
-    for (let i = 0; i < this.groupsOfUser.length; i++) {
-      let params = null;
-      params = new HttpParams().set('groupName', this.groupsOfUser[i].name);
-      this.http.get<string[]>('https://breshub-engine.etiennebader.de/groups/getAllMembersInGroup', { headers, params })
-        .subscribe({
-          next: (response) => {
-            this.groupsize[i] = response.length;
-            this.groupMembers[i] = response;
-            console.log("Group Size: " + this.groupsize[i]);
-            console.log("Group Members: " + this.groupMembers[i]);
-          },
-          error: (err) => console.error('Fehler beim Abrufen der Gruppenanzahl:', err)
-        });
-      const group = this.groupsOfUser[i]; // Aktuelles Group-Element
+    this.customers = [];      
+    this.groupsOfUser.forEach(group => {
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
-        groupcounter: { counter: this.groupsize[i] }, // Falls dynamisch, anpassen
-        members: { members: this.groupMembers[i] },
+        groupcounter: { counter: this.groupsize.get(group.name) }, // Falls dynamisch, anpassen
+        members: { member: this.groupMembers?.members.get(group.name) },
         status: 'active'
       });
-    }
+    });
   }
+
 
   getSeverity(status: string): "success" | "secondary" | "info" | "warn" | "danger" | "contrast" | undefined {
     switch (status.toLowerCase()) {
