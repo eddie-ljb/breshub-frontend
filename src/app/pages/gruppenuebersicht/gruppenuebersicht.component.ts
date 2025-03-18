@@ -89,7 +89,7 @@ export class GruppenuebersichtComponent {
   groupsOfUser: Group[] = [];
   groupMembers: Members | null = null;
   member: string[] | undefined;
-  membersCounter: Map<string, number> = new Map<string, number>();
+  membersCounter: Map<string, number> = new Map();
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
