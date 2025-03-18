@@ -46,7 +46,7 @@ interface Member {
 interface Customer {
   id: number;
   name: string | undefined;
-  membersCount: number | undefined;
+  memberscount: number | undefined;
   members: Member;
   status: string;
 }
@@ -89,7 +89,7 @@ export class GruppenuebersichtComponent {
   groupsOfUser: Group[] = [];
   groupMembers: Members | null = null;
   member: string[] | undefined;
-  membersCounter: Map<string, number> = new Map<string, number>();
+  membersCount: Map<string, number> = new Map<string, number>();
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -163,7 +163,7 @@ export class GruppenuebersichtComponent {
         this.groupsOfUser = response.groups;
         this.groupMembers = response.members;
         this.groupsCounter = response.groupcounter;
-        this.membersCounter = response.membersCount;
+        this.membersCount = response.membersCount;
         console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
         this.loadCustomers();
       },
@@ -195,7 +195,7 @@ export class GruppenuebersichtComponent {
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
-        membersCount: this.membersCounter.get(group.name) , // Falls dynamisch, anpassen
+        memberscount: this.membersCount?.get(group.name) , // Falls dynamisch, anpassen
         members: { member: this.groupMembers?.members.get(group.name) },
         status: 'active'
       });
