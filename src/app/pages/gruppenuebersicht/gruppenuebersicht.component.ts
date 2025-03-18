@@ -86,7 +86,7 @@ export class GruppenuebersichtComponent {
   customers: Customer[] = [];
   selectedCustomers: Customer | null = null;
   groupsOfUser: Group[] = [];
-  groupMembers: Members | null = null;
+  groupMembers: Members | undefined;
   member: string[] | undefined;
   membersCounter: Map<string, number> = new Map();
 
@@ -161,6 +161,7 @@ export class GruppenuebersichtComponent {
       next: (response) => {
         this.groupsOfUser = response.groups;
         this.groupMembers = response.members;
+        console.log("groupMembers:" + this.groupMembers);
         this.groupsCounter = response.counter;
         this.membersCounter = new Map(Object.entries(response.membersCount));
         console.log("✅ membersCounter (Map):", this.membersCounter);
@@ -191,15 +192,20 @@ export class GruppenuebersichtComponent {
     this.customers = [];      
     this.groupsOfUser.forEach((group: { name: string; id: any; }) => {
       console.log("🔹 Gruppenname:", group.name);
+      let membersList: string[] | undefined = undefined;
+if (this.groupMembers?.members instanceof Map) {
+  membersList = this.groupMembers.members.get(group.name);
+}
 
     const memberCount = this.membersCounter.get(group.name);
     console.log(`📊 Mitgliederanzahl für ${group.name}:`, memberCount);
       console.log("gruppenname:" + group.name);
+      console.log("gruppemitglieder:" + this.groupMembers?.members.get(group.name));
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
         memberscount: this.membersCounter.get(group.name), // Falls dynamisch, anpassen
-        members: { member: this.groupMembers?.members.get(group.name) },
+        members: { member: membersList },
         status: 'active'
       });
     });
