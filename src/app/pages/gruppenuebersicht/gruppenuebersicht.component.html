@@ -79,10 +79,10 @@
                     <tr>
                         <th pSortableColumn="name" style="width:25%">Name <p-sortIcon field="name" /></th>
                         <th pSortableColumn="groupcounter.counter" style="width:25%">
-                            Gruppengröße <p-sortIcon field="groupcounter.counter" />
+                            Gruppengröße <p-sortIcon field="memberscount" />
                         </th>
                         <th pSortableColumn="members.members" style="width:25%">
-                            Gruppenmitglieder <p-sortIcon field="members.members" />
+                            Gruppenmitglieder <p-sortIcon field="members.member" />
                         </th>
                         <th pSortableColumn="status" style="width:25%">Status <p-sortIcon field="status" /></th>
                     </tr>
@@ -94,12 +94,12 @@
                         </td>
                         <td>
                             <div class="flex items-center gap-2">
-                                <span class="ml-1 align-middle">{{ customer.groupcounter.counter }}</span>
+                                <span class="ml-1 align-middle">{{ customer.memberscount }}</span>
                             </div>
                         </td>
                         <td>
                             <div class="flex items-center gap-2">
-                                <span class="ml-1 align-middle">{{ customer.members.members }}</span>
+                                <span class="ml-1 align-middle">{{ customer.members.member }}</span>
                             </div>
                         </td>
                         <td>
