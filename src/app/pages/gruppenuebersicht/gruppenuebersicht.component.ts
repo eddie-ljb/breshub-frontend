@@ -26,6 +26,7 @@ interface GroupCounter {
 }
 
 interface GroupInfo {
+  membersCount: Map<string, number>;
   members: Members;
   groups: Group[];
   groupcounter: number;
@@ -163,10 +164,8 @@ export class GruppenuebersichtComponent {
       next: (response) => {
         this.groupsOfUser = response.groups;
         this.groupMembers = response.members;
-        this.groupsCounter = response.groupcounter
-        this.groupsOfUser.forEach(group => {
-          this.groupsize.set(group.name, this.groupsOfUser.length);
-        });
+        this.groupsCounter = response.groupcounter;
+        this.groupsize = response.membersCount;
         console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
         this.loadCustomers();
       },
@@ -194,6 +193,7 @@ export class GruppenuebersichtComponent {
   loadCustomers() {
     this.customers = [];      
     this.groupsOfUser.forEach(group => {
+      console.log("gruppenname:" + group.name);
       this.customers.push({
         id: group.id, // Falls ID benötigt wird, aus `group` nehmen
         name: group.name,
