@@ -27,7 +27,7 @@ interface GroupInfo {
   membersCount: Map<string, number>;
   members: Members;
   groups: Group[];
-  groupcounter: number;
+  counter: number;
 }
 
 interface Group {
@@ -162,7 +162,7 @@ export class GruppenuebersichtComponent {
       next: (response) => {
         this.groupsOfUser = response.groups;
         this.groupMembers = response.members;
-        this.groupsCounter = response.groupcounter;
+        this.groupsCounter = response.counter;
         this.membersCount = response.membersCount;
         console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
         this.loadCustomers();
