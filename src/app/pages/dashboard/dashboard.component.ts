@@ -77,7 +77,7 @@ export class DashboardComponent {
         icon: 'pi pi-pencil',
         items: [
           { label: 'Übersicht', icon: 'pi pi-copy', command: () => this.router.navigate(['/gruppen-uebersicht']) },
-          { label: 'Erstellen', icon: 'pi pi-plus' },
+          { label: 'Erstellen', icon: 'pi pi-plus', command: () => this.router.navigate(['/gruppen-erstellen']) },
           { label: 'Beitreten', icon: 'pi pi-user-plus' },
           { label: 'Löschen', icon: 'pi pi-times' }
         ]

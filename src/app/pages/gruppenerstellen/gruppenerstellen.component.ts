@@ -20,7 +20,12 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import { MultiSelectModule, MultiSelectSelectAllChangeEvent } from 'primeng/multiselect';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 
 interface GroupInfo {
   membersCount: Map<string, number>;
@@ -50,31 +55,44 @@ interface Customer {
   status: string;
 }
 
+interface selectedValue {
+  label: string;
+  value: string;
+}
+
 @Component({
-  selector: 'app-gruppenuebersicht',standalone: true,
-  encapsulation: ViewEncapsulation.None,
-    imports: [
-      CommonModule,
-      FormsModule,
-      RouterModule,
-      HttpClientModule,
-      ButtonModule,
-      MenuModule,
-      ToastModule,
-      AvatarModule,
-      BadgeModule,
-      SidebarModule,
-      MeterGroupModule,
-      CardModule,
-      TableModule,
-      TagModule,
-      IconFieldModule,
-      InputIconModule
-    ],
-  templateUrl: './gruppenuebersicht.component.html',
-  styleUrl: './gruppenuebersicht.component.css'
+  selector: 'app-gruppenerstellen',
+  standalone: true,
+    encapsulation: ViewEncapsulation.None,
+      imports: [
+        CommonModule,
+        FormsModule,
+        RouterModule,
+        HttpClientModule,
+        ButtonModule,
+        MenuModule,
+        ToastModule,
+        AvatarModule,
+        BadgeModule,
+        SidebarModule,
+        MeterGroupModule,
+        CardModule,
+        TableModule,
+        TagModule,
+        IconFieldModule,
+        InputIconModule,
+        AutoCompleteModule,
+        MultiSelectModule,
+        InputGroupModule,
+        InputGroupAddonModule,
+        FloatLabelModule,
+        InputTextModule
+      ],
+  templateUrl: './gruppenerstellen.component.html',
+  styleUrl: './gruppenerstellen.component.css'
 })
-export class GruppenuebersichtComponent {
+export class GruppenerstellenComponent {
+
   items: MenuItem[] = [];
   token: string = '';
   username: string = '';
@@ -89,6 +107,11 @@ export class GruppenuebersichtComponent {
   groupMembers!: Members;
   member: string[] | undefined;
   membersCounter: Map<string, number> = new Map();
+  name: string = "";
+  selectedItems: selectedValue[] = [];
+  selectAll: boolean|null|undefined;
+  allUsers: string[] = [];
+  userValues: any[] = [];
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -102,6 +125,51 @@ export class GruppenuebersichtComponent {
     });
     this.setupMenu();
 
+  }
+  async onSubmit() {
+
+    const gruppenData = {
+      name: this.name,
+      members: [""]
+    };
+
+    for(let i=0; i < this.selectedItems.length; i++) {
+      gruppenData.members[i] = this.selectedItems[i].value;
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`
+    });
+
+    try {
+      const response = await fetch("https://breshub-engine.etiennebader.de/groups/updateGroup", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              'accept': 'application/hal+json',
+          },
+          body: JSON.stringify(gruppenData)
+      });
+
+      if (!response.ok) {
+          throw new Error(`Fehler: ${response.status} ${response.statusText}`);
+      }
+
+      const result = await response;
+      console.log("Erfolgreich gesendet:", result);
+      
+      } catch (error) {
+      console.error("Fehler beim Senden der Anfrage:", error);
+    }
+    
+  }
+
+  search($event: AutoCompleteCompleteEvent) {
+    throw new Error('Method not implemented.');
+  }
+
+  onSelectAllChange($event: MultiSelectSelectAllChangeEvent) {
+    throw new Error('Method not implemented.');
   }
 
   setupMenu() {
@@ -136,13 +204,9 @@ export class GruppenuebersichtComponent {
   }
 
   setupValues() {
-    console.log("Values Counter:" + this.groupsCounter);
-    let used = parseFloat((this.groupsCounter / 15).toFixed(2)) * 100;
-    this.value = [
-      { label: 'Gruppen', value: used, color: '#4CAF50', icon: 'pi pi-file' },
-      { label: 'Andere', value: 0, color: '#9C27B0', icon: 'pi pi-folder' },
-      { label: 'Freier Speicher', value: (100 - used), color: '#E0E0E0', icon: 'pi pi-hdd' }
-    ];
+    for(let i=0; i < this.allUsers.length; i++ ) {
+      this.userValues[i] = { label: this.allUsers[i], value: this.allUsers[i]}
+    }
   }
 
   getUsername() {
@@ -171,6 +235,15 @@ export class GruppenuebersichtComponent {
         this.loadCustomers();
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
+      });
+      this.http.get< string[] >('https://breshub-engine.etiennebader.de/credentials/getAllUser')
+    .subscribe({
+      next: (response) => {
+        this.allUsers = response;
+        console.log("allUsers:" + this.allUsers);
+        this.setupValues();
+      },
+      error: (err) => console.error('Fehler beim Abrufen der User:', err)
       });
       },
       error: (err) => console.error('Fehler beim Abrufen des Nutzernamens:', err)
