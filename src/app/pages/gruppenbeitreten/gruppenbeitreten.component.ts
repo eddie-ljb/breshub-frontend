@@ -61,37 +61,37 @@ interface selectedValue {
 }
 
 @Component({
-  selector: 'app-gruppenerstellen',
-  standalone: true,
-    encapsulation: ViewEncapsulation.None,
-      imports: [
-        CommonModule,
-        FormsModule,
-        RouterModule,
-        HttpClientModule,
-        ButtonModule,
-        MenuModule,
-        ToastModule,
-        AvatarModule,
-        BadgeModule,
-        SidebarModule,
-        MeterGroupModule,
-        CardModule,
-        TableModule,
-        TagModule,
-        IconFieldModule,
-        InputIconModule,
-        AutoCompleteModule,
-        MultiSelectModule,
-        InputGroupModule,
-        InputGroupAddonModule,
-        FloatLabelModule,
-        InputTextModule
-      ],
-  templateUrl: './gruppenerstellen.component.html',
-  styleUrl: './gruppenerstellen.component.css'
+  selector: 'app-gruppenbeitreten',
+    standalone: true,
+      encapsulation: ViewEncapsulation.None,
+        imports: [
+          CommonModule,
+          FormsModule,
+          RouterModule,
+          HttpClientModule,
+          ButtonModule,
+          MenuModule,
+          ToastModule,
+          AvatarModule,
+          BadgeModule,
+          SidebarModule,
+          MeterGroupModule,
+          CardModule,
+          TableModule,
+          TagModule,
+          IconFieldModule,
+          InputIconModule,
+          AutoCompleteModule,
+          MultiSelectModule,
+          InputGroupModule,
+          InputGroupAddonModule,
+          FloatLabelModule,
+          InputTextModule
+        ],
+  templateUrl: './gruppenbeitreten.component.html',
+  styleUrl: './gruppenbeitreten.component.css'
 })
-export class GruppenerstellenComponent {
+export class GruppenbeitretenComponent {
 
   items: MenuItem[] = [];
   token: string = '';
@@ -309,3 +309,4 @@ if (this.groupMembers?.members instanceof Map) {
 
 
 }
+

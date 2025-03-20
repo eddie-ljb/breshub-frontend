@@ -9,6 +9,7 @@ import { PricingComponent } from './pages/pricing/pricing.component';
 import { TeamComponent } from './pages/team/team.component';
 import { GruppenuebersichtComponent } from './pages/gruppenuebersicht/gruppenuebersicht.component';
 import { GruppenerstellenComponent } from './pages/gruppenerstellen/gruppenerstellen.component';
+import { GruppenbeitretenComponent } from './pages/gruppenbeitreten/gruppenbeitreten.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -19,5 +20,6 @@ export const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' }, // Standardroute zeigt AppComponent
   { path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'always' },
   { path: 'gruppen-uebersicht', component: GruppenuebersichtComponent, runGuardsAndResolvers: 'always' },
-  { path: 'gruppen-erstellen', component: GruppenerstellenComponent, runGuardsAndResolvers: 'always' }
+  { path: 'gruppen-erstellen', component: GruppenerstellenComponent, runGuardsAndResolvers: 'always' },
+  { path: 'gruppen-beitreten', component: GruppenbeitretenComponent, runGuardsAndResolvers: 'always' }
 ];

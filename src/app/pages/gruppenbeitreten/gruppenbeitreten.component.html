@@ -1,0 +1,109 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Sidebar Menu</title>
+  </head>
+  
+  <body>
+    <div class="flex min-h-screen">
+  
+      <!-- Sidebar für große Bildschirme -->
+      <div class="hidden lg:flex flex-col w-64 bg-gray-800 text-white h-screen p-4">
+        <div class="flex items-center space-x-2 pb-4 border-b border-gray-700">
+          <svg width="33" height="35" viewBox="0 0 33 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="..." fill="var(--primary-color)" />
+          </svg>
+          <span class="text-xl font-semibold">Bres<span class="text-primary">Hub</span></span>
+        </div>
+        <p-menu [model]="items" class="mt-4" styleClass="w-full">
+            <ng-template #item let-item>
+                <a pRipple class="flex items-center p-menu-item-link">
+                  <span [class]="item.icon"></span>
+                  <span class="ml-2">{{ item.label }}</span>
+                  <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+                  <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
+                    {{ item.shortcut }}
+                  </span>
+                </a>
+              </ng-template>
+              <ng-template #end>
+                <button pRipple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
+                  <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
+                  <span class="inline-flex flex-col">
+                    <span class="font-bold">{{ username }}</span>
+                  </span>
+                </button>
+              </ng-template>
+
+        </p-menu>
+      </div>
+  
+    <!-- Hauptinhalt -->
+    <div class="flex-1 flex flex-col">        
+        <!-- Navbar für kleine Bildschirme -->
+        <div class="p-2 flex justify-between items-center bg-gray-800 text-white lg:hidden">
+            <p-button icon="pi pi-home" (click)="toggleSidebar()" aria-label="Home" class="button-handy"/>
+            <h1 class="">BresHub</h1>
+        </div>
+        <div class="p-2 flex justify-between text-primary items-center bg-gray-700 text-white">
+            <span class="text-xl font-semibold">Gruppen - Beitreten</span>
+        </div>
+    
+
+    <div class="p-5">
+      <form class="space-y-6" (ngSubmit)="onSubmit()">
+      <p-inputgroup>
+        <p-inputgroup-addon>
+          <i class="pi pi-user"></i>
+        </p-inputgroup-addon>
+        <p-floatlabel>
+          <input pInputText id="over_label" [(ngModel)]="name" name="name"/>
+          <label for="over_label">Gruppenname</label>
+        </p-floatlabel>
+      </p-inputgroup>
+
+      <p-inputgroup>
+        <p-inputgroup-addon>Mitglieder</p-inputgroup-addon>
+      <p-multiselect [options]="userValues" [showToggleAll]="true" name="members" [selectAll]="selectAll" [(ngModel)]="selectedItems" optionLabel="label" [virtualScroll]="true" [virtualScrollItemSize]="43" class="multiselect-custom-virtual-scroll" placeholder="Wähle Mitglieder" (onSelectAllChange)="onSelectAllChange($event)" [maxSelectedLabels]="3" styleClass="w-full md:w-80" #ms>
+        <ng-template #headercheckboxicon let-allSelected let-partialSelected="partialSelected">
+            <i class="pi pi-check" *ngIf="allSelected"></i>
+            <i class="pi pi-minus" *ngIf="partialSelected" [ngStyle]="{ color: 'var(--text-color)' }"></i>
+        </ng-template>
+      </p-multiselect>
+    </p-inputgroup>
+
+    <p-inputgroup>
+      <p-button type="submit" label="Save" icon="pi pi-check" iconPos="right" />
+    </p-inputgroup>
+    </form>
+    </div>
+
+  </div>
+
+ <!-- Sidebar für kleine Bildschirme (über Button aufrufbar) -->
+ <p-sidebar [(visible)]="isSidebarVisible" [baseZIndex]="10000" position="left" [modal]="true" class="lg:hidden">
+    <p-menu [model]="items" styleClass="w-full">
+        <ng-template #item let-item>
+            <a pRipple class="flex items-center p-menu-item-link">
+              <span [class]="item.icon"></span>
+              <span class="ml-2">{{ item.label }}</span>
+              <p-badge *ngIf="item.badge" class="ml-auto" [value]="item.badge" />
+              <span *ngIf="item.shortcut" class="ml-auto border border-surface rounded bg-emphasis text-muted-color text-xs p-1">
+                {{ item.shortcut }}
+              </span>
+            </a>
+          </ng-template>
+          <ng-template #end>
+            <button pRipple class="relative overflow-hidden w-full border-0 bg-transparent flex items-start p-2 pl-4 hover:bg-surface-100 dark:hover:bg-surface-800 rounded-none cursor-pointer transition-colors duration-200">
+              <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
+              <span class="inline-flex flex-col">
+                <span class="font-bold">{{ username }}</span>
+              </span>
+            </button>
+          </ng-template>
+
+    </p-menu>
+  </p-sidebar>
+
+</div>
+</body>
