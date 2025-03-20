@@ -109,9 +109,11 @@ export class GruppenbeitretenComponent {
   membersCounter: Map<string, number> = new Map();
   name: string = "";
   selectedItems: selectedValue[] = [];
+  selectedGroup: selectedValue[] = [];
   selectAll: boolean|null|undefined;
   allUsers: string[] = [];
   userValues: any[] = [];
+  gruppenValues: any[] = [];
 
   constructor(private tokenService: TokenService, private http: HttpClient, private router: Router) {
     this.tokenService.getToken().subscribe(token => {
@@ -129,7 +131,7 @@ export class GruppenbeitretenComponent {
   async onSubmit() {
 
     const gruppenData = {
-      name: this.name,
+      name: this.selectedGroup[0].value,
       members: [""]
     };
 
@@ -202,12 +204,32 @@ export class GruppenbeitretenComponent {
       }
     ];
   }
+  async chooseGroup() {
+    const gruppenData = {
+      gruppen: this.selectedGroup,
+      members: [""]
+    };
 
-  setupValues() {
-    for(let i=0; i < this.allUsers.length; i++ ) {
-      this.userValues[i] = { label: this.allUsers[i], value: this.allUsers[i]}
-    }
+    this.setupValues();
   }
+  setupValues() {
+    this.selectedItems = []; // Leere Liste, um doppelte Einträge zu vermeiden
+    this.userValues = this.allUsers.map(user => ({ label: user, value: user }));
+  
+    const groupMembersList = this.groupMembers.members.get(this.selectedGroup[0].value) || []; // Sicherstellen, dass ein Array zurückgegeben wird
+  
+    for (let i = 0; i < this.allUsers.length; i++) {
+      if (groupMembersList.includes(this.allUsers[i])) {  // Prüft, ob der User in der Gruppe ist
+        this.selectedItems.push({
+          label: this.allUsers[i],
+          value: this.allUsers[i]
+        });
+      }
+    }
+  
+    console.log("selected:", this.selectedItems);
+  }
+  
 
   getUsername() {
     const headers = new HttpHeaders({
@@ -233,6 +255,7 @@ export class GruppenbeitretenComponent {
         console.log("✅ membersCounter (Map):", this.membersCounter);
         console.log("Groups Name: " + this.groupsOfUser.at(0)?.name);
         this.loadCustomers();
+        this.setupGruppenValues();
       },
       error: (err) => console.error('Fehler beim Abrufen der Gruppen von User:', err)
       });
@@ -263,6 +286,14 @@ export class GruppenbeitretenComponent {
     this.router.navigate(['/']);
   }
 
+  setupGruppenValues() {
+    this.gruppenValues = [];
+    for(let i=0; i < this.groupsOfUser.length; i++) {
+      this.gruppenValues[i] = { label: this.groupsOfUser[i].name, value: this.groupsOfUser[i].name};
+      console.log("group:" + this.groupsOfUser[i].name);
+    }
+  }
+
   loadCustomers() {
     this.customers = [];      
     this.groupsOfUser.forEach((group: { name: string; id: any; }) => {
@@ -271,7 +302,6 @@ export class GruppenbeitretenComponent {
 if (this.groupMembers?.members instanceof Map) {
   membersList = this.groupMembers.members.get(group.name);
 }
-
     const memberCount = this.membersCounter.get(group.name);
     console.log(`📊 Mitgliederanzahl für ${group.name}:`, memberCount);
       console.log("gruppenname:" + group.name);
