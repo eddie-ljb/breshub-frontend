@@ -60,8 +60,9 @@ interface selectedValue {
   value: string;
 }
 
+
 @Component({
-  selector: 'app-gruppenbeitreten',
+  selector: 'app-gruppenentfernen',
     standalone: true,
       encapsulation: ViewEncapsulation.None,
         imports: [
@@ -88,10 +89,10 @@ interface selectedValue {
           FloatLabelModule,
           InputTextModule
         ],
-  templateUrl: './gruppenbeitreten.component.html',
-  styleUrl: './gruppenbeitreten.component.css'
+  templateUrl: './gruppenentfernen.component.html',
+  styleUrl: './gruppenentfernen.component.css'
 })
-export class GruppenbeitretenComponent {
+export class GruppenentfernenComponent {
 
   items: MenuItem[] = [];
   token: string = '';
@@ -129,28 +130,23 @@ export class GruppenbeitretenComponent {
 
   }
   async onSubmit() {
+    this.chooseGroup();
 
     const gruppenData = {
       name: this.selectedGroup[0].value,
-      members: [""]
     };
-
-    for(let i=0; i < this.selectedItems.length; i++) {
-      gruppenData.members[i] = this.selectedItems[i].value;
-    }
-
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`
     });
 
     try {
-      const response = await fetch("https://breshub-engine.etiennebader.de/groups/updateGroup", {
+      const response = await fetch("https://breshub-engine.etiennebader.de/groups/deleteGroup", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
               'accept': 'application/hal+json',
           },
-          body: JSON.stringify(gruppenData)
+          body: gruppenData.name
       });
 
       if (!response.ok) {
@@ -339,4 +335,3 @@ if (this.groupMembers?.members instanceof Map) {
 
 
 }
-

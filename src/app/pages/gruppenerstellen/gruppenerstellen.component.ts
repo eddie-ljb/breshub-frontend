@@ -188,7 +188,7 @@ export class GruppenerstellenComponent {
           { label: 'Übersicht', icon: 'pi pi-copy', command: () => this.router.navigate(['/gruppen-uebersicht']) },
           { label: 'Erstellen', icon: 'pi pi-plus', command: () => this.router.navigate(['/gruppen-erstellen']) },
           { label: 'Beitreten', icon: 'pi pi-user-plus', command: () => this.router.navigate(['/gruppen-beitreten']) },
-          { label: 'Löschen', icon: 'pi pi-times' }
+          { label: 'Löschen', icon: 'pi pi-times', command: () => this.router.navigate(['/gruppen-entfernen']) }
         ]
       },
       {

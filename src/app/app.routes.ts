@@ -10,6 +10,7 @@ import { TeamComponent } from './pages/team/team.component';
 import { GruppenuebersichtComponent } from './pages/gruppenuebersicht/gruppenuebersicht.component';
 import { GruppenerstellenComponent } from './pages/gruppenerstellen/gruppenerstellen.component';
 import { GruppenbeitretenComponent } from './pages/gruppenbeitreten/gruppenbeitreten.component';
+import { GruppenentfernenComponent } from './pages/gruppenentfernen/gruppenentfernen.component';
 
 export const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,5 +22,6 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent, runGuardsAndResolvers: 'always' },
   { path: 'gruppen-uebersicht', component: GruppenuebersichtComponent, runGuardsAndResolvers: 'always' },
   { path: 'gruppen-erstellen', component: GruppenerstellenComponent, runGuardsAndResolvers: 'always' },
-  { path: 'gruppen-beitreten', component: GruppenbeitretenComponent, runGuardsAndResolvers: 'always' }
+  { path: 'gruppen-beitreten', component: GruppenbeitretenComponent, runGuardsAndResolvers: 'always' },
+  { path: 'gruppen-entfernen', component: GruppenentfernenComponent, runGuardsAndResolvers: 'always' }
 ];
